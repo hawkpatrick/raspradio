@@ -1,0 +1,8 @@
+#EXTM3U
+#EXTINF:0,Klassik Radio
+http://stream.klassikradio.de/live/mp3-192/stream.klassikradio.de
+#EXTINF:0,Koelncampus
+http://koelncampus.uni-koeln.de/mid.ogg
+#EXTINF:0,Egosoul
+http://www.egofm.de/stream/192kb.m3u
+

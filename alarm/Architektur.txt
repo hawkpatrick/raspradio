@@ -1,0 +1,13 @@
+*** Wecker ***
+
+* Server (auf PI) besteht aus 3 Anwendungen: 
+a) VLC-Server mit HTTP-API (Abspielen der Musik-Inhalte, Kontrollieren Play/Pause/etc über die HTTP-API)
+b) Python HTTP-REST-Server (Hinzufügen / Entfernen von Alarmen)
+c) Python Batch-Job        (Überwacht bestehende, aktive Alarme und steuert bei einem Alarm den VLC-Server an)
+d) nice-to-have: Job, der einen Hardware-Button zum deaktivieren des Alarms überwacht
+
+
+* Client als Android-App
+  * Hinzufügen / Löschen / Ändern von Alarmen (aktiv oder deaktiv)
+  * nice-to-have: Modifizierung der Playlist
+  * nice-to-have: Direktes Play/Pause/etc von Streams
