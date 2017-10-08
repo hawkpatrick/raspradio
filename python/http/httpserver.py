@@ -1,5 +1,7 @@
 #!flask/bin/python
 from flask import Flask, jsonify, abort, make_response, request, url_for
+import requests
+from requests.auth import HTTPBasicAuth
 
 app = Flask(__name__)
 
@@ -33,20 +35,58 @@ def get_html_page(page):
     with open(page, 'r') as content_file:
         content = content_file.read()
     return content
-    
 
+def get_html_start_page():
+    result = get_html_page('Start.html')
+    active_alarms = get_html_active_alarms()
+    result = result.replace("$AKTIVE_WECKER", active_alarms)
+    return result
+    
+def get_html_active_alarms():
+    content = ""
+    with open('../batch/timers', 'r') as timersfile:
+        content = timersfile.read()
+    if content:
+        active_alarm = get_html_page('aktiver_wecker.html')
+        active_alarm = active_alarm.replace('$ALARM_TIME', content)
+	content = "<h1>Aktiver Wecker</h1>" + active_alarm
+    return content
 
 @app.route('/alarm/app/v1.0/alarm', methods=['GET'])
-def open_app():
-    print "Received request1: " + str(request)
-    print "---"
+def alarm_main():
+    print "Received request: " + str(request)
     reqargs = request.args
+    if ('deleteme' in reqargs):
+        delete_alarm()
     if ('hour' in reqargs and 'minute' in reqargs):
 	hour = reqargs['hour']
 	minute = reqargs['minute']
         save_alarm(hour,minute)
-        return get_html_page('Saved.html')
-    return get_html_page('Start.html')
+        return get_html_start_page()
+    return get_html_start_page()
+
+def delete_alarm():
+    open('../batch/timers', 'w').close()
+    vlccmd('pl_stop')
+    return ""
+
+
+#
+# VLC 
+# 
+
+def vlccmd(cmd):
+    username = ""
+    password = "hello"
+    url = 'http://127.0.0.1:43822/requests/status.xml?command='+cmd
+    values = {'username': username, 'password': password }
+    res = requests.get(url, auth=(username, password))
+    print res
+
+#
+# REST Interface
+#
+
 
 
 @app.route('/alarm/app/v1.0/start', methods=['POST'])
@@ -118,3 +158,4 @@ def not_found(error):
 
 if __name__ == '__main__':
     app.run(debug=True,host='192.168.0.220',port=8080)
+

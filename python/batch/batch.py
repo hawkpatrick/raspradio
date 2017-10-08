@@ -2,8 +2,10 @@
 import threading
 import datetime
 from datetime import datetime
+from dateutil import parser
 import requests
 from requests.auth import HTTPBasicAuth
+import os, time
 
 def vlccmd(cmd):
     username = ""
@@ -17,8 +19,9 @@ def vlcplay():
     vlccmd('pl_play')
 
 def evaluateTimer(linenumber, line):
-    alarmtime = datetime.strptime(line, '%H:%M')
+    alarmtime = parser.parse(line)
     now = datetime.now()
+    # print str(alarmtime) + ", now: " + str(now)
     if alarmtime.hour == now.hour and alarmtime.minute == now.minute:
         print "Alarm!!!!"
         vlcplay()
@@ -33,6 +36,8 @@ def printit():
             evaluateTimer(i, line)
     threading.Timer(5.0, printit).start()
 
-  
+# TZ muss gesetzt werden
+os.environ['TZ'] = 'Europe/Paris'
+
 printit()
 

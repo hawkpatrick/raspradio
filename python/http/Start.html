@@ -1,20 +1,96 @@
 <html>
 <head>
+<script>
+function validateForm() {
+    var hour = document.forms["timeForm"]["hour"].value;
+    var minute = document.forms["timeForm"]["minute"].value;
+    var isValid = true;
+    if (isNaN(hour) || isNaN(minute)) {
+	isValid = false;
+    }
+    if (!(isInt(hour) && isInt(minute))) {
+	isValid = false;
+    }
+    var hourInt = parseInt(hour);
+    if (hourInt > 23 || hourInt < 0) {
+	isValid = false;
+    }
+    var minuteInt = parseInt(minute);
+    if (minuteInt > 59 || minuteInt < 0) {
+	isValid = false;
+    }
+    if (!isValid) {
+	alert("Bitte Uhrzeit eingeben, z.B. 23:45");
+        return false;
+    }
+    return true;
+} 
+
+function isInt(value) {
+  var x = parseFloat(value);
+  if (value.indexOf(".") !== -1) {
+    return false;
+  }
+  if (value.indexOf(",") !== -1) {
+    return false;
+  }
+  return !isNaN(value) && (x | 0) === x;
+}
+</script>
+    <style>
+
+      h1 { font-size: 70px; }
+      p  { font-size: 60px; }
+      a  { font-size: 40px; }
+input[type=text] {
+ padding: 10px;
+  border: solid 5px #c9c9c9;
+  font-size: 50px;
+  text-align: center; 
+  transition: border 0.3s;
+}
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 35px;
+}
+.disable-button {
+    background-color: #AF4C50; /* Red */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 35px;
+}
+.main-div {
+	width:800px;
+	margin:50 auto; 
+	padding:30; 
+	background-color:gray;
+}
+
+    </style>
 </head>
-<body>
-<form>
-<form action="/alarm/app/v1.0/putalarm">
-  Hour:<br>
-  <input type="number" name="hour" value="">
-  <br>
-  Minute:<br>
-  <input type="number" name="minute" value="">
-  <br><br>
-  <input type="submit" value="Submit">
-</form> 
-
-<form>
-
+<body bgcolor="#E6E6FA">
+    <div class="main-div">
+        <a href="alarm">aktualisieren</a>
+	$AKTIVE_WECKER
+	<form name="timeForm" action="/alarm/app/v1.0/alarm" onsubmit="return validateForm()">
+	  <h1>Neuer Wecker</h1>
+          <p>
+	  <input type="text" name="hour" value="00" maxlength="2" size="2">
+	  <input type="text" name="minute" value="00" maxlength="2" size="2">
+	  <input type="submit" class="button" value="OK">
+          </p>
+	</form> 
+    </div>
 </body>
 
 </html>
