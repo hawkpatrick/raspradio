@@ -1,0 +1,6 @@
+wget --user '' --password hello http://192.168.0.220:43822/requests/playlist.xml
+
+
+wget --user '' --password hello http://192.168.0.220:43822/requests/status.xml?command=pl_stop
+
+wget --user '' --password hello http://192.168.0.220:43822/requests/status.xml?command=pl_play

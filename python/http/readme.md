@@ -53,3 +53,6 @@ curl -i -H "Content-Type: application/json" -X PUT -d '{"done":true}' http://loc
 todo: delete gibt es natürlich auch...
 
 
+curl -i -H "Content-Type: application/json" -X POST -d '{"hour":20, "minute":10}' http://192.168.0.220:8080/alarm/api/v1.0/alarms
+
+http://192.168.0.220:8080/alarm/app/v1.0

@@ -21,6 +21,47 @@ def make_public_task(task):
             new_task[field] = task[field]
     return new_task
 
+
+def save_alarm(hour, minute):
+    alarmstr = "" + str(hour) + ":" + str(minute)
+    with open('../batch/timers', 'w') as the_file:
+        the_file.write(alarmstr + '\n')
+    return "Saved " + alarmstr
+
+def get_html_page(page):
+    content = ""
+    with open(page, 'r') as content_file:
+        content = content_file.read()
+    return content
+    
+
+
+@app.route('/alarm/app/v1.0/alarm', methods=['GET'])
+def open_app():
+    print "Received request1: " + str(request)
+    print "---"
+    reqargs = request.args
+    if ('hour' in reqargs and 'minute' in reqargs):
+	hour = reqargs['hour']
+	minute = reqargs['minute']
+        save_alarm(hour,minute)
+        return get_html_page('Saved.html')
+    return get_html_page('Start.html')
+
+
+@app.route('/alarm/app/v1.0/start', methods=['POST'])
+def receive_new_alarm():
+    print "Received request: " + request
+    return ""
+
+@app.route('/alarm/api/v1.0/alarms', methods=['POST'])
+def create_alarm():
+    hour = request.json['time']
+    minute = request.json['minute']
+    alarmstr = "" + str(hour) + ":" + str(minute)
+    save_alarm(hour,minute)
+    return jsonify({'alarm': alarmstr}), 201
+
 @app.route('/todo/api/v1.0/tasks', methods=['GET'])
 def get_tasks():
     return jsonify({'tasks': [make_public_task(task) for task in tasks]})

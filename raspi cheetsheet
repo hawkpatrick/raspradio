@@ -1,0 +1,5 @@
+Neustart:
+sudo shutdown -r now
+
+Start-Log:
+dmesg
