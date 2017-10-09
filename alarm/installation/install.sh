@@ -13,11 +13,11 @@ sudo apt-get update
 sudo apt-get install vlc
 echo "Finished installing vlc player"
 
-# Kopieren der Datei PhoVlcStartup... Dort steht drin, dass der VLC gestartet werden soll
+# Kopieren der Datei initraspradiovlc... Dort steht drin, dass der VLC gestartet werden soll
 # Die Datei wird zum Systemstart als Servie hinzugefügt
-sudo cp /home/pi/PhoVlcStartup /etc/init.d/PhoVlcStartup
-sudo chmod 755 /etc/init.d/PhoVlcStartup
-sudo update-rc.d /etc/init.d/PhoVlcStartup defaults
+sudo cp /home/pi/initraspradiovlc /etc/init.d/initraspradiovlc
+sudo chmod 755 /etc/init.d/initraspradiovlc
+sudo update-rc.d /etc/init.d/initraspradiovlc defaults
 
 # Install virtualenv (for python)
 # TODO
