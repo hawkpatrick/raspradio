@@ -81,9 +81,18 @@ input[type=text] {
 <body bgcolor="#E6E6FA">
     <div class="main-div">
         <a href="alarm">aktualisieren</a>
-	$AKTIVE_WECKER
+
+	{% if aktivewecker %}
+        <h1>Aktive Wecker</h1>
+        {% endif %}
+	{% for wecker in aktivewecker %}
+		<form>
+		  <input type="hidden" name="deleteme" value="yes">
+		  <p><input type="text" readonly value="{{wecker}}" maxlength="2" size="2"> <button class="disable-button" type="submit" value="-">abschalten</button></p>
+		</form>
+        {% endfor %}
 	<form name="timeForm" action="/alarm/app/v1.0/alarm" onsubmit="return validateForm()">
-	  <h1>Neuer Wecker</h1>
+	  <h1>Neuer Weck-Timer</h1>
           <p>
 	  <input type="text" name="hour" value="00" maxlength="2" size="2">
 	  <input type="text" name="minute" value="00" maxlength="2" size="2">

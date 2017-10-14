@@ -1,28 +1,9 @@
 #!flask/bin/python
-from flask import Flask, jsonify, abort, make_response, request, url_for
+from flask import Flask, jsonify, abort, make_response, request, url_for, render_template
 import requests
 from requests.auth import HTTPBasicAuth
 
 app = Flask(__name__)
-
-tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Chees',
-        'done': False
-    }
-]
-
-def make_public_task(task):
-    new_task = {}
-    for field in task:
-        if field == 'id':
-            new_task['uri'] = url_for('get_task', task_id=task['id'], _external=True)
-        else:
-            new_task[field] = task[field]
-    return new_task
-
 
 def save_alarm(hour, minute):
     alarmstr = "" + str(hour) + ":" + str(minute)
@@ -30,27 +11,9 @@ def save_alarm(hour, minute):
         the_file.write(alarmstr + '\n')
     return "Saved " + alarmstr
 
-def get_html_page(page):
-    content = ""
-    with open(page, 'r') as content_file:
-        content = content_file.read()
-    return content
-
-def get_html_start_page():
-    result = get_html_page('Start.html')
-    active_alarms = get_html_active_alarms()
-    result = result.replace("$AKTIVE_WECKER", active_alarms)
-    return result
-    
-def get_html_active_alarms():
-    content = ""
-    with open('../batch/timers', 'r') as timersfile:
-        content = timersfile.read()
-    if content:
-        active_alarm = get_html_page('aktiver_wecker.html')
-        active_alarm = active_alarm.replace('$ALARM_TIME', content)
-	content = "<h1>Aktiver Wecker</h1>" + active_alarm
-    return content
+def get_active_alarms():
+    lines = [line.rstrip('\n') for line in open('../batch/timers', 'r')]
+    return lines
 
 @app.route('/alarm/app/v1.0/alarm', methods=['GET'])
 def alarm_main():
@@ -62,8 +25,9 @@ def alarm_main():
 	hour = reqargs['hour']
 	minute = reqargs['minute']
         save_alarm(hour,minute)
-        return get_html_start_page()
-    return get_html_start_page()
+    weckers=get_active_alarms()
+    print weckers
+    return render_template('Start.html', aktivewecker=weckers)
 
 def delete_alarm():
     open('../batch/timers', 'w').close()
@@ -84,10 +48,28 @@ def vlccmd(cmd):
     print res
 
 #
-# REST Interface
+# TUTORIAL REST Interface
 #
 
 
+tasks = [
+    {
+        'id': 1,
+        'title': u'Buy groceries',
+        'description': u'Milk, Chees',
+        'done': False
+    }
+]
+
+
+def make_public_task(task):
+    new_task = {}
+    for field in task:
+        if field == 'id':
+            new_task['uri'] = url_for('get_task', task_id=task['id'], _external=True)
+        else:
+            new_task[field] = task[field]
+    return new_task
 
 @app.route('/alarm/app/v1.0/start', methods=['POST'])
 def receive_new_alarm():
