@@ -15,7 +15,7 @@ case "$1" in
  #Aktion wenn start uebergeben wird
         echo "Starte MeinProgramm"
         sleep 10
-        sudo /home/pi/http/raspradio_http_launch.sh
+        sudo /home/pi/app/raspradio_http_launch.sh
         ;;
  
     stop)

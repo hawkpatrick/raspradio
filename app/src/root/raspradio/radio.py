@@ -1,4 +1,9 @@
-#!flask/bin/python
+#!env/bin/python
+'''
+Created on 15.10.2017
+
+@author: pho
+'''
 from flask import Flask, jsonify, abort, make_response, request, url_for, render_template
 import json
 import requests
@@ -129,8 +134,8 @@ def alarm_main():
     if ('deleteme' in reqargs):
         delete_alarm(reqargs['deleteme'])
     if ('hour' in reqargs and 'minute' in reqargs):
-	hour = reqargs['hour']
-	minute = reqargs['minute']
+        hour = reqargs['hour']
+        minute = reqargs['minute']
         streamname = reqargs['stream']
         a = Alarm(str(len(alarms)), hour,minute)
         a.streamname = streamname

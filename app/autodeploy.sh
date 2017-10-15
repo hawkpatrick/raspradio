@@ -8,7 +8,7 @@ fileschanged=false
 while true; do
 
   fileschanged=false
-  filesfound="$(find http -type f -not -name '*.swp')"
+  filesfound="$(find src -type f -not -name '*.swp')"
   for entry in $filesfound
   do
     entrydate=$(date -r "$entry" +%s)
@@ -19,7 +19,7 @@ while true; do
   done
   if [ "$fileschanged" = true ]
   then
-    scp -r http pi@192.168.0.220:/home/pi
+    scp -r src pi@192.168.0.220:/home/pi/app
     echo -e "${GREEN}Deployed http${NC} at "$(date)
   fi
   lastdeploy=$(date +%s)
