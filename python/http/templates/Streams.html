@@ -9,7 +9,14 @@
 <table>
     {% endif %}
     {% for stream in streams %}
-  <tr><td>{{stream.name}}</td><td><a href="{{stream.url}}">{{stream.url}}</a></td></tr>
+  <tr>
+<td>{{stream.name}}</td><td><a href="{{stream.url}}">{{stream.url}}</a></td>
+      <td><form action="/alarm/app/v1.0/streams">
+          <input type="hidden" name="deleteme" value="{{stream.name}}" />
+          <input type="submit" class="button" value="DEL" />
+          </form>
+      </td>
+</tr>
     {% endfor %}
     {% if streams %}
 </table>

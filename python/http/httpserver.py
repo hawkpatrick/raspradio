@@ -13,6 +13,7 @@ import urllib
 # TZ muss gesetzt werden
 os.environ['TZ'] = 'Europe/Paris'
 
+
 alarms = []
 streams = []
 
@@ -50,6 +51,12 @@ def find_stream_by_name(name):
         if stream.name == name:
             return stream
     return None
+
+def find_stream_index_by_name(name):
+    for idx, stream in enumerate(streams):
+        if stream.name == name:
+            return idx
+    return -1
 
 def update_lastalarm(now):
     global lastalarm
@@ -97,6 +104,12 @@ def add_new_stream(name, url):
     streams.append(Stream(name,url))
     save_streams_to_file()
 
+def delete_stream(name):
+    streamindex = find_stream_index_by_name(name)
+    if streamindex < 0:
+        return 
+    del streams[streamindex]
+
 @app.route('/alarm/app/v1.0/streams', methods=['GET'])
 def http_get_configure_streams():
     reqargs = request.args
@@ -105,6 +118,9 @@ def http_get_configure_streams():
         name = reqargs['name']
         if stream and name: 
             add_new_stream(name, stream)
+    if 'deleteme' in reqargs:
+        streamname = reqargs['deleteme']
+        delete_stream(streamname)
     return render_template('Streams.html', streams=streams[:])
 
 @app.route('/alarm/app/v1.0/alarm', methods=['GET'])
@@ -193,92 +209,6 @@ def vlcplaystream(stream):
      vlccmd_input('in_enqueue', stream)
      vlccmd('pl_play')
 
-#
-# TUTORIAL REST Interface
-#
-
-
-tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Chees',
-        'done': False
-    }
-]
-
-
-def make_public_task(task):
-    new_task = {}
-    for field in task:
-        if field == 'id':
-            new_task['uri'] = url_for('get_task', task_id=task['id'], _external=True)
-        else:
-            new_task[field] = task[field]
-    return new_task
-
-@app.route('/alarm/app/v1.0/start', methods=['POST'])
-def receive_new_alarm():
-    print "Received request: " + request
-    return ""
-
-@app.route('/alarm/api/v1.0/alarms', methods=['POST'])
-def create_alarm():
-    hour = request.json['time']
-    minute = request.json['minute']
-    alarmstr = "" + str(hour) + ":" + str(minute)
-    save_alarm(hour,minute)
-    return jsonify({'alarm': alarmstr}), 201
-
-@app.route('/todo/api/v1.0/tasks', methods=['GET'])
-def get_tasks():
-    return jsonify({'tasks': [make_public_task(task) for task in tasks]})
-
-@app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['GET'])
-def get_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404)
-    return jsonify({'task': task[0]})
-
-@app.route('/todo/api/v1.0/tasks', methods=['POST'])
-def create_task():
-    if not request.json or not 'title' in request.json:
-        abort(400)
-    task = {
-        'id': tasks[-1]['id'] + 1,
-        'title': request.json['title'],
-        'description': request.json.get('description', ""),
-        'done': False
-    }
-    tasks.append(task)
-    return jsonify({'tasks': task}), 201
-
-@app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['PUT'])
-def update_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404)
-    if not request.json:
-        abort(400)
-    if 'title' in request.json and type(request.json['title']) != unicode:
-        abort(400)
-    if 'description' in request.json and type(request.json['description']) is not unicode:
-        abort(400)
-    if 'done' in request.json and type(request.json['done']) is not bool:
-        abort(400)
-    task[0]['title'] = request.json.get('title', task[0]['title'])
-    task[0]['description'] = request.json.get('description', task[0]['description'])
-    task[0]['done'] = request.json.get('done', task[0]['done'])
-    return jsonify({'task': task[0]})
-
-@app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['DELETE'])
-def delete_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404)
-    tasks.remove(task[0])
-    return jsonify({'result': True})
 
 @app.errorhandler(404)
 def not_found(error):
