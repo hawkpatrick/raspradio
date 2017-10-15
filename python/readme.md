@@ -33,7 +33,12 @@ Vorbereitung:
   $ flask/bin/pip install python-dateutil
   $ flask/bin/pip install flask-httpauth
 
+* Flask aktivieren: 
+  $ cd flask
+  $ source bin/activate
+
 * Das selbe für batch, bspw. im Ordner /home/pi/batch
+
   
 
 *** Deployment ***

@@ -36,6 +36,8 @@ function isInt(value) {
   }
   return !isNaN(value) && (x | 0) === x;
 }
+
+
 </script>
     <style>
 
@@ -87,9 +89,14 @@ input[type=text] {
         {% endif %}
 	{% for wecker in aktivewecker %}
 		<form>
-		  <input type="hidden" name="deleteme" value="yes">
-		  <p><input type="text" readonly value="{{wecker}}" maxlength="2" size="2"> <button class="disable-button" type="submit" value="-">abschalten</button></p>
+		  <input type="hidden" name="deleteme" value="{{wecker.alarmid}}">
+		<p>
+		  <input type="text" readonly value="{{wecker.hour}}:{{wecker.minute}}" maxlength="2" size="2"> 
+		  <button class="disable-button" type="submit" value="-">abschalten</button>
+                  <br />({{wecker.streamname}})
+		</p>
 		</form>
+
         {% endfor %}
 	<form name="timeForm" action="/alarm/app/v1.0/alarm" onsubmit="return validateForm()">
 	  <h1>Neuer Weck-Timer</h1>
@@ -97,9 +104,16 @@ input[type=text] {
 	  <input type="text" name="hour" value="00" maxlength="2" size="2">
 	  <input type="text" name="minute" value="00" maxlength="2" size="2">
 	  <input type="submit" class="button" value="OK">
-          </p>
+         <br />
+	<select name="stream">
+		{% for stream in streams %}
+	             <option value="{{stream.name}}">{{stream.name}}</option>
+		{% endfor %}
+	</select>
+ 		</p>
 	</form> 
     </div>
+    <a href="streams">Streams</a>
 </body>
 
 </html>

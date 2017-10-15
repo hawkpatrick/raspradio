@@ -21,3 +21,6 @@ sudo update-rc.d /etc/init.d/initraspradiovlc defaults
 
 # Install virtualenv (for python)
 # TODO
+
+# etc/hosts anpassen 
+# TODO

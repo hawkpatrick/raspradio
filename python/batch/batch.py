@@ -7,6 +7,8 @@ import requests
 from requests.auth import HTTPBasicAuth
 import os, time
 
+lastalarm = None
+
 def vlccmd(cmd):
     username = ""
     password = "hello"
@@ -19,11 +21,13 @@ def vlcplay():
     vlccmd('pl_play')
 
 def evaluateTimer(linenumber, line):
+    
     alarmtime = parser.parse(line)
     now = datetime.now()
     # print str(alarmtime) + ", now: " + str(now)
     if alarmtime.hour == now.hour and alarmtime.minute == now.minute:
         print "Alarm!!!!"
+        lastalarm = datetime.now()
         vlcplay()
         
 

@@ -40,5 +40,5 @@ while true; do
     echo -e "${GREEN}Deployed batch${NC} at "$(date)
   fi
   lastdeploy=$(date +%s)
-  sleep 5
+  sleep 2
 done
