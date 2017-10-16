@@ -6,7 +6,7 @@ Created on 15.10.2017
 from datetime import datetime
 from dateutil import parser
 import streams, control_vlc
-from root.raspradio.streams import play_stream
+from streams import play_stream
 
 lastalarm = datetime.strptime('8/18/2008', "%m/%d/%Y")
 

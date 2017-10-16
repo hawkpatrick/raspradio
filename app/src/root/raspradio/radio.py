@@ -10,7 +10,8 @@ import json
 import threading
 import os
 import streams, control_vlc
-from root.raspradio import ring_alarm
+import ring_alarm
+from config import configuration
 
 # Timezone muss gesetzt werden
 os.environ['TZ'] = 'Europe/Paris'
@@ -103,11 +104,14 @@ def alarm_main():
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
+def get_host_from_config():
+    return configuration.read_value_http_server("Url")
+
 if __name__ == '__main__':  
     load_timers_from_file()
     streams.load_streams_from_file()
     start_batch_thread()
-    app.run(debug=True,host='127.0.0.1',port=8080, use_reloader=False)
+    app.run(debug=True,host=get_host_from_config(),port=8080, use_reloader=False)
     #app.run(debug=True,host='192.168.0.220',port=8080, use_reloader=False)
 
 
