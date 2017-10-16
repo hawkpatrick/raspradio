@@ -29,6 +29,8 @@ class ConfigurationTest(unittest.TestCase):
         mock_get_config_path.return_value = "/home/pho/workspace/eclipse/python/raspradio/app/src/root/raspradio/config/files/pho-lenox.ini"
         assert configuration.read_value_http_server("Url") == "127.0.0.1"
     
+    def test_get_config_path(self):
+        assert "raspradio/config/files" in configuration.get_config_path()
 
 
 if __name__ == "__main__":

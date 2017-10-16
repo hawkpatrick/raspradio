@@ -21,7 +21,6 @@ def open_config_file():
 
 def get_config_path():
     base = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files')
-    print "base: " + base
     if is_env_raspberry():
         return base + "/raspberry.ini"
     else:
