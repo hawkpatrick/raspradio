@@ -105,7 +105,7 @@ def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 def get_host_from_config():
-    return configuration.read_value_http_server("Url")
+    return configuration.read_config_value("SectionHttpServer", "Url")
 
 if __name__ == '__main__':  
     load_timers_from_file()
