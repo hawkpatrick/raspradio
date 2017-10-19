@@ -32,6 +32,7 @@ Vorbereitung:
   $ flask/bin/pip install requests
   $ flask/bin/pip install python-dateutil
   $ flask/bin/pip install configparser
+  $ flask/bin/pip install mock
   $ flask/bin/pip install flask-httpauth
 
 * Flask aktivieren: 

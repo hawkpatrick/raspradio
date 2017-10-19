@@ -5,6 +5,7 @@ Created on 15.10.2017
 '''
 from flask import render_template
 import os, json, urllib, control_vlc
+from database import db_access
 
 radio_streams = []
 
@@ -21,7 +22,7 @@ class Stream:
             sort_keys=True, indent=4)
 
 def get_path_to_backup_file():
-    return "files/streams_backup"
+    return db_access.get_path_to_streams_file()
 
 def add_new_stream(name, url):
     radio_streams.append(Stream(name,url))

@@ -35,15 +35,20 @@ def init_config_holder():
     conf.read(path)
     return conf
 
+def get_config_base_path():
+    current_path = os.path.abspath(os.path.dirname(__file__))
+    current_path = os.path.join(current_path, os.pardir, os.pardir, 'resources', 'config')
+    return current_path
+
 def get_config_path():
-    base = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files')
+    base = get_config_base_path()
     if is_env_raspberry():
         return base + "/raspberry.ini"
     else:
         return base + "/pho-lenox.ini"
     
 def get_common_config_path():
-    base = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files')
+    base = get_config_base_path()
     return base + "/common.ini"    
 
 

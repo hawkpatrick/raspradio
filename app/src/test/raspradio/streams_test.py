@@ -17,7 +17,8 @@ class StreamsTest(unittest.TestCase):
 
 
     def tearDown(self):
-        pass
+        streams.radio_streams = []
+        streams.save_streams_to_file()
 
 
     def test_add_stream(self):

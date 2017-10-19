@@ -6,7 +6,7 @@ Created on 15.10.2017
 import unittest
 from mock import patch
 from root.raspradio import ring_alarm, streams
-from root.raspradio.radio import Alarm
+from root.raspradio.alarms import Alarm
 from mock import ANY
 
 class RingAlarmTest(unittest.TestCase):

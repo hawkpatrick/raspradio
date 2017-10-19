@@ -9,14 +9,10 @@ from root.raspradio.config import configuration
 
 
 class ConfigurationTest(unittest.TestCase):
-
-
+    
     def setUp(self):
-        pass
-
-
-    def tearDown(self):
-        pass
+        configuration.common_config_holder = None
+        configuration.config_holder = None
 
     @patch('root.raspradio.config.configuration.read_hostname')
     def test_is_env_raspberry(self, mock_read_hostname):
@@ -24,19 +20,25 @@ class ConfigurationTest(unittest.TestCase):
         isRaspi = configuration.is_env_raspberry()
         assert isRaspi
     
-    @patch('root.raspradio.config.configuration.get_config_path')
-    def test_read_a_config_value(self, mock_get_config_path):
-        """Reads the value SectionHttpServer#Url from the config. get_config_path is mocked"""
-        mock_get_config_path.return_value = "/home/pho/workspace/eclipse/python/raspradio/app/src/root/raspradio/config/files/pho-lenox.ini"
-        assert configuration.read_config_value("SectionHttpServer", "Url") == "127.0.0.1"
+    @patch('root.raspradio.config.configuration.is_env_raspberry')
+    def test_read_a_config_value(self, mock_is_env_raspberry):
+        """Reads the value SectionHttpServer#Url from the config. is_env_raspberry is mocked"""
+        mock_is_env_raspberry.return_value = False
+        actual_value = configuration.read_config_value("SectionHttpServer", "Url")
+        assert actual_value == "127.0.0.1"
     
-    def test_get_config_path(self):
-        assert "raspradio/config/files" in configuration.get_config_path()
-  
-    @patch('root.raspradio.config.configuration.get_config_path')
-    def test_read_a_config_from_common_config_file(self, mock_get_config_path):
-        mock_get_config_path.return_value = "/home/pho/workspace/eclipse/python/raspradio/app/src/root/raspradio/config/files/pho-lenox.ini"
-        assert configuration.read_config_value("SectionCommonTest", "AKey") == "AValue"
+    @patch('root.raspradio.config.configuration.is_env_raspberry')
+    def test_read_a_config_value_when_on_raspi(self, mock_is_env_raspberry):
+        """Reads the value SectionHttpServer#Url from the config. is_env_raspberry is mocked"""
+        mock_is_env_raspberry.return_value = True
+        actual_value = configuration.read_config_value("SectionHttpServer", "Url")
+        assert actual_value == "192.168.0.220"
+        
+    @patch('root.raspradio.config.configuration.is_env_raspberry')
+    def test_read_a_config_from_common_config_file(self, mock_is_env_raspberry):
+        mock_is_env_raspberry.return_value = False
+        actual_value = configuration.read_config_value("SectionCommonTest", "AKey")
+        assert actual_value == "AValue"
  
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
