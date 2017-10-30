@@ -5,8 +5,7 @@ Created on 15.10.2017
 '''
 from datetime import datetime
 from dateutil import parser
-import streams, control_vlc
-from streams import play_stream
+import streams, control_vlc, urllib, fade_in, stop_ringing
 
 lastalarm = datetime.strptime('8/18/2008', "%m/%d/%Y")
 
@@ -34,8 +33,13 @@ def ring_ring(alarm):
     if alarm.streamname:
         stream = streams.find_stream_by_name(alarm.streamname)
         if stream:
-            play_stream(stream)
+            encodedstream = urllib.quote_plus(stream.url)
+            if alarm.fadein:
+                fade_in.start_fade_in()
+            control_vlc.vlc_play_stream(encodedstream)
+            stop_ringing.start_timer_stop_ringing(alarm)
             update_lastalarm(now)
             return    
     control_vlc.vlccmd('pl_play')
     update_lastalarm(now)
+    

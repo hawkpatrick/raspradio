@@ -49,13 +49,17 @@ def get_host_from_config():
     return configuration.read_config_value("SectionHttpServer", "Url")
 
 
-
-
 def handle_request_new_alarm(reqargs):
     hour = reqargs['hour']
     minute = reqargs['minute']
     streamname = reqargs['stream']
-    alarms.add_new_alarm(hour, minute, streamname)
+    fadein = False
+    if 'fadein' in reqargs:
+        fadein = True
+    duration = 0
+    if 'duration' in reqargs:
+        duration = reqargs['duration']
+    alarms.add_new_alarm(hour, minute, streamname, fadein, duration)
 
 
 def handle_request_delete_alarm(reqargs):

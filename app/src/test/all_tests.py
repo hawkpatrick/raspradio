@@ -9,6 +9,8 @@ from test.raspradio.radio_test import RadioTest
 from test.raspradio.ring_alarm_test import RingAlarmTest
 from test.raspradio.alarms_test import AlarmsTest
 from test.raspradio.config.configuration_test import ConfigurationTest
+from test.raspradio.control_vlc_test import ControlVlcTest
+from test.raspradio.fade_in_test import FadeInTest
 
 
 class Test(unittest.TestCase):
@@ -24,11 +26,16 @@ if __name__ == "__main__":
     suiteAlarms = unittest.TestLoader().loadTestsFromTestCase(AlarmsTest)
     suiteRingAlarm = unittest.TestLoader().loadTestsFromTestCase(RingAlarmTest)
     suiteConfig = unittest.TestLoader().loadTestsFromTestCase(ConfigurationTest)
+    suiteVlc = unittest.TestLoader().loadTestsFromTestCase(ControlVlcTest)
+    suiteFadeIn = unittest.TestLoader().loadTestsFromTestCase(FadeInTest)
 
     allTests = unittest.TestSuite([
         suiteStreams, 
         suiteRadio, 
         suiteAlarms,
         suiteRingAlarm,
-        suiteConfig])
+        suiteConfig,
+        suiteVlc,
+        suiteFadeIn
+        ])
     unittest.TextTestRunner(verbosity=2).run(allTests)

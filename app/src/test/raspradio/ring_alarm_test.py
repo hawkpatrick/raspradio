@@ -28,7 +28,7 @@ class RingAlarmTest(unittest.TestCase):
         alarm = Alarm("1","00","00")
         alarm.streamname = "Klassik Radio"
         ring_alarm.ring_ring(alarm)
-        mock_control_vlc.vlcplaystream.assert_called_with("url")
+        mock_control_vlc.vlc_play_stream.assert_called_with("url")
         
     @patch('root.raspradio.ring_alarm.control_vlc')
     @patch('root.raspradio.streams.control_vlc')

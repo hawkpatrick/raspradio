@@ -1,3 +1,9 @@
+startup:
+
+vlc -I http --http-port 43822 --http-password hello /home/pi/playlist.m3u > /dev/null
+
+requests:
+
 wget --user '' --password hello http://192.168.0.220:43822/requests/playlist.xml
 
 

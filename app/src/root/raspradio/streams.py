@@ -78,6 +78,6 @@ def delete_stream(name):
     
 def play_stream(stream):
     encodedstream = urllib.quote_plus(stream.url)
-    control_vlc.vlcplaystream(encodedstream)
+    control_vlc.vlc_play_stream(encodedstream)
 
 

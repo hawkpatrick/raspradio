@@ -1,5 +1,8 @@
 <html>
 <head>
+
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/raspradio.css') }}">
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/checkbox_slider.css') }}">
 <script>
 function validateForm() {
     var hour = document.forms["timeForm"]["hour"].value;
@@ -39,46 +42,8 @@ function isInt(value) {
 
 
 </script>
-    <style>
 
-      h1 { font-size: 70px; }
-      p  { font-size: 60px; }
-      a  { font-size: 40px; }
-input[type=text] {
- padding: 10px;
-  border: solid 5px #c9c9c9;
-  font-size: 50px;
-  text-align: center; 
-  transition: border 0.3s;
-}
-.button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 35px;
-}
-.disable-button {
-    background-color: #AF4C50; /* Red */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 35px;
-}
-.main-div {
-	width:800px;
-	margin:50 auto; 
-	padding:30; 
-	background-color:gray;
-}
 
-    </style>
 </head>
 <body bgcolor="#E6E6FA">
     <div class="main-div">
@@ -110,6 +75,17 @@ input[type=text] {
 	             <option value="{{stream.name}}">{{stream.name}}</option>
 		{% endfor %}
 	</select>
+       <br />
+        <label for="fadein">Fade-In</label>
+<label class="switch">
+	<input type="checkBox" id="fadein" name="fadein" value="Yes" checked> 
+  <span class="slider"></span>
+</label>
+        <input type="text" name="fadeinvalue" value="0" size="2" disabled/> 
+
+	<br />
+  
+        <label>Duration</label> <input type="text" name="duration" value="30" size="4" /> 
  		</p>
 	</form> 
     </div>
