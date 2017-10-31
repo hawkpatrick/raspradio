@@ -21,8 +21,7 @@ class Alarm:
         return self.toJSON()
 
     def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, 
-            sort_keys=True, indent=4)
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 def add_new_alarm(hour, minute, streamname, fadein, duration):
     a = Alarm(str(len(all_alarms)), hour, minute)

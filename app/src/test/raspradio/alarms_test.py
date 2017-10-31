@@ -19,7 +19,7 @@ class AlarmsTest(unittest.TestCase):
 
     def test_add_new_alarm(self):
         assert len(alarms.all_alarms) is 0
-        alarms.add_new_alarm("1", "10", "22", True)
+        alarms.add_new_alarm("1", "10", "22", True, 10)
         assert len(alarms.all_alarms) is 1
     
 
