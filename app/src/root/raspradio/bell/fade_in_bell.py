@@ -14,28 +14,29 @@ def create_new_fader():
     control_vlc.vlc_set_volume(0)
     fader = FadeIn(60, 256, 1)
     print "Fade-In starting: From 0 to " + str(fader.targetVolume)
-    __create_and_start_fader_thread(fader)
+    __start_fader_thread(fader)
     return fader
 
-def __create_and_start_fader_thread(fader):
-    faderThread = threading.Thread(target=__fade_in_loop_thread, args=[fader])
+def __start_fader_thread(fader):
+    faderThread = threading.Thread(target=__fader_thread, args=[fader])
     faderThread.start()
-
-def __fade_in_loop_thread(fader):
+    
+def __repeat_fader_thread(fader):     
+    if fader.state == STATE_STOPPED:
+        return
+    t = threading.Timer(fader.deltaTime, __fader_thread, [fader])
+    t.start()
+    
+def __fader_thread(fader):
     fader.currentVolume = fader.currentVolume + fader.deltaVolume
     if fader.currentVolume >= fader.targetVolume:
         print "Fade-In completed: Reached target volume of " + str(fader.targetVolume)
         fader.currentVolume = fader.targetVolume
         fader.deactivate()
     control_vlc.vlc_set_volume(fader.currentVolume)   
-    __repeat_fade_in_loop_thread(fader)
+    __repeat_fader_thread(fader)
     
-def __repeat_fade_in_loop_thread(fader):     
-    if fader.state == STATE_STOPPED:
-        return
-    t = threading.Timer(fader.deltaTime, __fade_in_loop_thread, [fader])
-    t.start()
-
+    
 class FadeIn(object):
     '''
     Args:
