@@ -63,3 +63,4 @@ def vlc_play_stream(stream_url):
     vlccmd('pl_empty')
     vlccmd_input('in_enqueue', stream_url)
     vlccmd('pl_play')
+    

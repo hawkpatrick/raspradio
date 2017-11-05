@@ -6,27 +6,14 @@ Created on 15.10.2017
 '''
 from flask import Flask, jsonify, make_response, request, render_template
 
-import threading
 import os
-import streams, ring_alarm, alarms
+from root.raspradio import streams, alarms, watch_alarms
 from config import configuration
 
 # Timezone muss gesetzt werden
 os.environ['TZ'] = 'Europe/Paris'
 
-
 app = Flask(__name__)
-
-
-def check_for_alarm():
-    for alarm in alarms.all_alarms:
-        ring_alarm.evaluate_alarm(alarm)
-    threading.Timer(5.0, check_for_alarm).start()
-
-def start_batch_thread():
-    t1 = threading.Thread(target=check_for_alarm, args=[])
-    t1.start()
-
 
 @app.route('/alarm/app/v1.0/streams', methods=['GET'])
 def http_get_configure_streams():
@@ -48,29 +35,17 @@ def not_found(error):
 def get_host_from_config():
     return configuration.read_config_value("SectionHttpServer", "Url")
 
-
 def handle_request_new_alarm(reqargs):
-    hour = reqargs['hour']
-    minute = reqargs['minute']
-    streamname = reqargs['stream']
-    fadein = False
-    if 'fadein' in reqargs:
-        fadein = True
-    duration = 0
-    if 'duration' in reqargs:
-        duration = reqargs['duration']
-    alarms.add_new_alarm(hour, minute, streamname, fadein, duration)
-
+    alarms.add_alarm_by_request_args(reqargs)
 
 def handle_request_delete_alarm(reqargs):
     return alarms.delete_alarm(reqargs['deleteme'])
 
 
-
 if __name__ == '__main__':  
     alarms.load_alarms_from_file()
     streams.load_streams_from_file()
-    start_batch_thread()
+    watch_alarms.start_watching()
     app.run(debug=True,host=get_host_from_config(),port=8080, use_reloader=False)
     #app.run(debug=True,host='192.168.0.220',port=8080, use_reloader=False)
 

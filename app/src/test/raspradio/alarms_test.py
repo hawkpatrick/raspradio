@@ -22,8 +22,6 @@ class AlarmsTest(unittest.TestCase):
         alarms.add_new_alarm("1", "10", "22", True, 10)
         assert len(alarms.all_alarms) is 1
     
-
-
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

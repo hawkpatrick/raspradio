@@ -5,24 +5,36 @@ Created on 30.10.2017
 '''
 import threading
 from root.raspradio import control_vlc
+    
+STATE_CREATED = 1
+STATE_STARTED = 2
+STATE_STOPPED = 3
 
-
-def start_fade_in():
-    fader = FadeIn(60, 256, 1)
+def create_new_fader():
     control_vlc.vlc_set_volume(0)
+    fader = FadeIn(60, 256, 1)
     print "Fade-In starting: From 0 to " + str(fader.targetVolume)
+    __create_and_start_fader_thread(fader)
+    return fader
 
-    t1 = threading.Thread(target=do_fade_in, args=[fader])
-    t1.start()
+def __create_and_start_fader_thread(fader):
+    faderThread = threading.Thread(target=__fade_in_loop_thread, args=[fader])
+    faderThread.start()
 
-def do_fade_in(fader):
+def __fade_in_loop_thread(fader):
     fader.currentVolume = fader.currentVolume + fader.deltaVolume
     if fader.currentVolume >= fader.targetVolume:
         print "Fade-In completed: Reached target volume of " + str(fader.targetVolume)
         fader.currentVolume = fader.targetVolume
-    control_vlc.vlc_set_volume(fader.currentVolume)
-    if fader.currentVolume < fader.targetVolume:
-        threading.Timer(fader.deltaTime, do_fade_in, [fader]).start()
+        fader.deactivate()
+    control_vlc.vlc_set_volume(fader.currentVolume)   
+    __repeat_fade_in_loop_thread(fader)
+    
+def __repeat_fade_in_loop_thread(fader):     
+    if fader.state == STATE_STOPPED:
+        return
+    t = threading.Timer(fader.deltaTime, __fade_in_loop_thread, [fader])
+    t.start()
 
 class FadeIn(object):
     '''
@@ -33,11 +45,11 @@ class FadeIn(object):
         deltaTime Time in seconds for interval between volume increasing events
     '''
 
-
     def __init__(self, timespan, targetVolume, deltaTime):
         '''
         Constructor
         '''
+        self.state = STATE_CREATED
         self.timespan = timespan
         self.targetVolume = targetVolume
         self.deltaTime = deltaTime
@@ -45,6 +57,10 @@ class FadeIn(object):
         self.deltaVolume = targetVolume / self.intervals
         self.currentVolume = 0
         
-
+    def activate(self):
+        self.state = STATE_STARTED
+    
+    def deactivate(self):
+        self.state = STATE_STOPPED
 
         

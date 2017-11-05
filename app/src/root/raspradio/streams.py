@@ -31,6 +31,7 @@ def add_new_stream(name, url):
     
 def load_streams_from_file():
     if not os.path.isfile(get_path_to_backup_file()):
+        print "Streams backup file not found!"
         return
     with open(get_path_to_backup_file(), "r") as the_file:
         for line in the_file:

@@ -1,1 +1,1 @@
-{     "alarmid": "0",      "duration": 10,      "fadein": true,      "hour": "1",      "minute": "10",      "streamname": "22" }
+{     "alarmid": "0",      "bellDurationSeconds": 10,      "hour": "1",      "isFadeInActive": true,      "minute": "10",      "streamname": "22" }

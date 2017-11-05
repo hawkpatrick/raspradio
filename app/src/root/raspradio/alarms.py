@@ -14,8 +14,8 @@ class Alarm:
         self.hour = hour
         self.minute = minute
         self.streamname = ''
-        self.fadein = False
-        self.duration = 30
+        self.isFadeInActive = False
+        self.bellDurationSeconds = 30
 
     def __repr__(self):
         return self.toJSON()
@@ -23,13 +23,25 @@ class Alarm:
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
-def add_new_alarm(hour, minute, streamname, fadein, duration):
+def add_new_alarm(hour, minute, streamname, fadein, bellDurationSeconds):
     a = Alarm(str(len(all_alarms)), hour, minute)
     a.streamname = streamname
-    a.fadein = fadein
-    a.duration = duration
+    a.isFadeInActive = fadein
+    a.bellDurationSeconds = bellDurationSeconds
     all_alarms.append(a)
     save_alarms_to_file()
+    
+def add_alarm_by_request_args(reqargs):
+    hour = reqargs['hour']
+    minute = reqargs['minute']
+    streamname = reqargs['stream']
+    fadein = False
+    if 'fadein' in reqargs:
+        fadein = True
+    duration = 0
+    if 'duration' in reqargs:
+        duration = reqargs['duration'] * 60
+    add_new_alarm(hour, minute, streamname, fadein, duration)
 
 def delete_alarm(alarmid):
     index = -1
@@ -50,10 +62,10 @@ def load_alarms_from_file():
             alarmdict = json.loads(line)
             alarm = Alarm(alarmdict['alarmid'], alarmdict['hour'], alarmdict['minute'])
             alarm.streamname = alarmdict['streamname']
-            if 'fadein' in alarmdict:
-                alarm.fadein = alarmdict['fadein']
-            if 'duration' in alarmdict:
-                alarm.duration = alarmdict['duration']
+            if 'isFadeInActive' in alarmdict:
+                alarm.isFadeInActive = alarmdict['isFadeInActive']
+            if 'bellDurationSeconds' in alarmdict:
+                alarm.bellDurationSeconds = alarmdict['bellDurationSeconds']
             all_alarms.append(alarm)
 
 def save_alarms_to_file():
