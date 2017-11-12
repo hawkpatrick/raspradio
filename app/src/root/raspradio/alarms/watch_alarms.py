@@ -9,7 +9,6 @@ from root.raspradio.bells import bell
 
 import threading
 from datetime import datetime
-from dateutil import parser
 from root.raspradio import alarms
 
 def start_watching():

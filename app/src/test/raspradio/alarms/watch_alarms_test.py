@@ -29,9 +29,15 @@ class WatchAlarmTest(unittest.TestCase):
     
     @patch('root.raspradio.alarms.watch_alarms._get_now', mock_get_now)
     def test_must_ring_bell_wrong_time(self):
+        '''
+        This should return false as the alarm time is not now (now is mocked).
+        '''
+        # given: an alarm at 11:00
         alarm = Alarm(0, 11, 00)
+        # when: checking if alarm must ring bell
         result = watch_alarms._must_ring_bell_now(alarm)
-        self.assertTrue(result)
+        # then: false, as (mocked) now is not 11:00
+        self.assertFalse(result)
             
     @patch('root.raspradio.alarms.watch_alarms._get_now', mock_get_now)
     def test_must_ring_bell_now_no_repeat(self):
