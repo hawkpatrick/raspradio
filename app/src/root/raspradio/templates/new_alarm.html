@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block body %}
+<div id="divNewAlarm">
+<form name="newAlarmForm" action="{{html_links['list_alarms']}}" onsubmit="return validateNewAlarmForm()">
+	<h1>Neuer Weck-Timer</h1>
+	<p>
+		<input type="text" name="hour" value="00" maxlength="2" size="2">
+		<input type="text" name="minute" value="00" maxlength="2" size="2">
+		<br />
+
+		<table>
+			<tr>
+				<td>
+					Wiederholen
+				</td>
+				<td>
+					<select name="selectRepeatType" id="selectRepeatType" onchange="onRepeatTypeChanged()">
+						<option value="once">einmalig</option>
+						<option value="alldays">jeden Tag</option>
+						<option value="weekdays">Mo - Fr</option>
+						<!-- <option value="custom">benutzerdefiniert</option> -->
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Stream
+				</td>
+				<td>
+					<select name="stream">
+						{% for stream in streams %}
+					 		<option value="{{stream.name}}">{{stream.name}}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="fadein">Fade-In</label>
+				</td>
+				<td>
+					<label class="switch">
+						<input type="checkBox" id="fadein" name="fadein" value="Yes" 
+							{% if config['SectionBellFader']['DefaultOn'] == 'Yes' %}checked{% endif %} > 
+						<span class="slider"></span>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>Turn-Off</label>
+				</td>
+				<td>
+					{% set isActive=config['SectionBellStopper']['DefaultOn']  == 'Yes' %}
+					{% set inputFieldStyle = "" if isActive else "display: none;" %}
+					<label class="switch">
+						<input type="checkBox" id="turnoff" name="turnoff" value="Yes" onclick='onTurnOfCheckBoxClicked(this);'
+							{% if isActive %}checked{% endif %}>  
+						<span class="slider"></span>
+					</label>
+					<input type="text" id="duration" name="duration" style="{{inputFieldStyle}}"
+						value="{{config['SectionBellStopper']['DurationInMinutes']}}" size="4" /> 
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="submit" class="button" value="OK">
+				</td>
+			</tr>		
+		</table>
+	</p>
+</form> 
+</div>
+<div id="divRepeatSelectDays" style="display: none;">
+	{% include 'select_days.html' %}
+	<button onclick="onRepeatSelectedDaysConfirmed()">Ok</button>
+</div>
+    
+{% endblock %}

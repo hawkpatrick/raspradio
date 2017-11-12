@@ -1,4 +1,7 @@
 eclipse.preferences.version=1
+encoding//env/lib/python2.7/site-packages/backports/configparser/__init__.py=utf-8
 encoding//env/lib/python2.7/site-packages/configparser.py=utf-8
 encoding//env/lib/python2.7/site-packages/flask/app.py=utf-8
+encoding//env/lib/python2.7/site-packages/flask/templating.py=utf-8
 encoding//env/lib/python2.7/site-packages/requests/api.py=utf-8
+encoding//env/lib/python2.7/site-packages/werkzeug/serving.py=utf-8

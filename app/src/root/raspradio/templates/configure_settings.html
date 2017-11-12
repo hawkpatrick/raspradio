@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1>Default-Einstellungen bearbeiten*</h1>
+<p>
+ *gilt nur für neue Wecker
+</p>
+<form name="configureSettingsForm" action="{{html_links['configure_settings']}}" onsubmit="return validateConfigureSettingsForm()">
+	<table>
+		<tr>
+			<td>
+				Wecker automatisch abschlaten? <br />
+				(Turn-Off)
+			</td>
+			<td>
+				{%	with config=config, configSection='SectionBellStopper', configKey='DefaultOn' %}
+				{% include "checkbox.html"  %}
+				{% endwith %}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Wann abschalten? (min) 
+			</td>
+			<td>
+				<input type="text" id="SectionBellStopper_DurationInMinutes" 
+					name="SectionBellStopper_DurationInMinutes" value="{{config['SectionBellStopper']['DurationInMinutes']}}" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Langsam lauter werden? <br />
+				(Fade-In)
+			</td>
+			<td>
+				{%	with config=config, configSection='SectionBellFader', configKey='DefaultOn' %}
+				{% include "checkbox.html"  %}
+				{% endwith %}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Fade-in Dauer (min)
+			</td>
+			<td>
+				<input type="text" id="SectionBellFader_Timespan" name="SectionBellFader_Timespan" 
+					value="{{config['SectionBellFader']['Timespan']}}" />
+			</td>
+		</tr>
+	</table>
+	<input type="submit" class="button" value="OK">
+</form>
+
+    
+{% endblock %}

@@ -11,7 +11,6 @@ import xml.etree.ElementTree as ET
 def get_vlc_host():
     return configuration.read_config_value("SectionVlcConnection", "VlcHost")
 
-
 def get_vlc_port():
     return configuration.read_config_value("SectionVlcConnection", "VlcPort")
 
@@ -47,17 +46,12 @@ def vlc_increase_volume(delta):
     volume_after = delta + volume_now
     vlc_set_volume(volume_after)
 
-
-
-
 def vlc_read_status_as_document():
     url = vlc_get_base_url() + '/requests/status.xml'
     content = vlccmd_by_url(url).content
     tree = ET.ElementTree(ET.fromstring(content))
     document = tree.getroot()
     return document
-
-
 
 def vlc_play_stream(stream_url):
     vlccmd('pl_empty')

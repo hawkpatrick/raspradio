@@ -7,24 +7,31 @@ import threading
 from datetime import datetime
 from root.raspradio import control_vlc
 
-
 STATE_CREATED = 0
 STATE_RUNNING = 1
 STATE_STOPPED = 2
 
-STOP_BELL_MONITOR_INTERVAL = 10
+MONITOR_INTERVAL_IN_SECONDS = 10
 
-def create_new_stop_the_bell(alarm):
-    result = Stopper(alarm.bellDurationSeconds)
-    faderThread = threading.Thread(target=__stop_bell_thread, args=[result])
+def create_new_stopper(alarm):
+    stopper = Stopper(alarm.bellDurationSeconds)
+    _start_stop_bell_monitor_thread(stopper)
+    return stopper
+
+def _start_stop_bell_monitor_thread(stopper):
+    faderThread = threading.Thread(target=_stop_bell_monitor_thread, args=[stopper])
     faderThread.start()
-    return result
 
-def __stop_bell_thread(stopTheBell):
-    if stopTheBell.mustStopTheBellNow():
-        stopTheBell.stopTheBellNow()
-    if stopTheBell.state != STATE_STOPPED:
-        threading.Timer(STOP_BELL_MONITOR_INTERVAL, __stop_bell_thread, [stopTheBell]).start()
+def _repeat_stop_bell_monitor_thread(stopper):
+    if stopper.state == STATE_STOPPED:
+        return
+    t = threading.Timer(MONITOR_INTERVAL_IN_SECONDS, _stop_bell_monitor_thread, [stopper])
+    t.start()
+        
+def _stop_bell_monitor_thread(stopper):
+    if stopper.mustStopTheBellNow():
+        stopper.stopTheBellNow()
+    _repeat_stop_bell_monitor_thread(stopper)
 
 class Stopper(object):
     '''

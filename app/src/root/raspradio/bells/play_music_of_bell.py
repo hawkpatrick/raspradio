@@ -15,7 +15,6 @@ class Musicplayer(object):
     classdocs
     '''
 
-
     def __init__(self, alarm):
         '''
         Constructor

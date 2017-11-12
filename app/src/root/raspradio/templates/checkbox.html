@@ -1,0 +1,7 @@
+<label class="switch">
+	{% set theValue = config[configSection][configKey] %}
+	<input type="checkBox" {% if theValue == "Yes" %}checked{% endif %} 
+		onclick="onCustomCheckboxClick(this, '{{configSection}}', '{{configKey}}');">
+	<span class="slider"></span>
+	<input type="hidden" name="{{configSection}}_{{configKey}}" id="{{configSection}}_{{configKey}}" value="{{theValue}}" >
+</label>

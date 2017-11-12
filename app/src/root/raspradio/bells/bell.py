@@ -10,18 +10,23 @@ current_bell = None
 
 def activate_new_bell(alarm):
     global current_bell
-    if __is_current_active_bell_still_valid(alarm):
+    if _is_current_active_bell_still_valid(alarm):
         return
-    deactivate_current_bell()
+    _deactivate_current_bell()
     current_bell = Bell(alarm)
-    current_bell.activate()
+    _activate_current_bell()
 
-def deactivate_current_bell():
+def _deactivate_current_bell():
     if current_bell == None:
         return
     current_bell.deactivate()
-
-def __is_current_active_bell_still_valid(alarm):
+    
+def _activate_current_bell():
+    if current_bell == None:
+        return
+    current_bell.activate()
+    
+def _is_current_active_bell_still_valid(alarm):
     now = datetime.now()
     if current_bell == None:
         return False
@@ -87,7 +92,7 @@ class Bell(object):
     def __init_stopper(self):
         if self.alarm.bellDurationSeconds <= 0:
             return
-        self.stopper = stop_the_bell.create_new_stop_the_bell(self.alarm)
+        self.stopper = stop_the_bell.create_new_stopper(self.alarm)
         self.stopper.activate()
         
     def __init_musicplayer(self):

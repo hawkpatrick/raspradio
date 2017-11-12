@@ -7,27 +7,71 @@ Created on 15.10.2017
 from flask import Flask, jsonify, make_response, request, render_template
 
 import os
-from root.raspradio import streams, alarms, watch_alarms
-from config import configuration
+from root.raspradio import streams
+from root.raspradio.alarms import watch_alarms
+from root.raspradio.alarms import alarm
+from root.raspradio.config import user_settings, configuration
 
 # Timezone muss gesetzt werden
 os.environ['TZ'] = 'Europe/Paris'
 
 app = Flask(__name__)
 
-@app.route('/alarm/app/v1.0/streams', methods=['GET'])
-def http_get_configure_streams():
-    return streams.http_configure_streams(request.args)
+list_alarms = "list_alarms"
+new_alarm = "new_alarm"
+configure_streams = "configure_streams"
+configure_settings = "configure_settings"
 
-@app.route('/alarm/app/v1.0/alarm', methods=['GET'])
-def alarm_main():
+
+html_links = {
+    list_alarms: list_alarms,
+    configure_streams: configure_streams,
+    new_alarm : new_alarm,
+    configure_settings : configure_settings
+    }
+
+@app.route('/raspradio/configure_streams', methods=['GET'])
+def entrypoint_configure_streams():
+    streams.http_configure_streams(request.args)
+    return render_template(
+        html_links[configure_streams] + ".html", 
+        html_links=html_links,
+        streams=streams.radio_streams[:])
+
+@app.route('/raspradio/list_alarms', methods=['GET'])
+def entrypoint_list_alarms():
     reqargs = request.args
     if ('deleteme' in reqargs):
         handle_request_delete_alarm(reqargs)
     if ('hour' in reqargs and 'minute' in reqargs):
         handle_request_new_alarm(reqargs)
-    return render_template('Start.html', aktivewecker=alarms.all_alarms[:], streams=streams.radio_streams[:])
+    return render_template(
+        html_links[list_alarms] + ".html", 
+        html_links=html_links,
+        aktivewecker=alarm.all_alarms[:], 
+        streams=streams.radio_streams[:])
 
+@app.route('/raspradio/new_alarm', methods=['GET'])
+def entrypoint_new_alarm():
+    config = user_settings.get_user_settings()
+    return render_template(
+        html_links[new_alarm] + ".html", 
+        html_links = html_links,
+        config = config,
+        aktivewecker = alarm.all_alarms[:], 
+        streams = streams.radio_streams[:])
+    
+@app.route('/raspradio/configure_settings', methods=['GET'])
+def entrypoint_configure_settings():
+    if request.args:
+        user_settings.save_user_settings(request.args)
+    config = user_settings.get_user_settings()
+    return render_template(
+        html_links[configure_settings] + ".html", 
+        html_links=html_links,
+        config=config)     
+    
+               
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
@@ -36,14 +80,14 @@ def get_host_from_config():
     return configuration.read_config_value("SectionHttpServer", "Url")
 
 def handle_request_new_alarm(reqargs):
-    alarms.add_alarm_by_request_args(reqargs)
+    alarm.add_alarm_by_request_args(reqargs)
 
 def handle_request_delete_alarm(reqargs):
-    return alarms.delete_alarm(reqargs['deleteme'])
+    return alarm.delete_alarm(reqargs['deleteme'])
 
 
 if __name__ == '__main__':  
-    alarms.load_alarms_from_file()
+    alarm.initialize()
     streams.load_streams_from_file()
     watch_alarms.start_watching()
     app.run(debug=True,host=get_host_from_config(),port=8080, use_reloader=False)

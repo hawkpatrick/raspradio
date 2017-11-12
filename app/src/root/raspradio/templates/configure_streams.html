@@ -1,9 +1,5 @@
-<html>
-<head>
-
-</head>
-<body bgcolor="#E6E6FA">
-    <a href="alarm">back</a>
+{% extends "layout.html" %}
+{% block body %}
 
     {% if streams %}
         <h1>Bekannte Streams</h1>
@@ -12,7 +8,7 @@
     {% for stream in streams %}
   <tr>
 <td>{{stream.name}}</td><td><a href="{{stream.url}}">{{stream.url}}</a></td>
-      <td><form action="/alarm/app/v1.0/streams">
+      <td><form action="{{html_links['configure_streams']}}">
           <input type="hidden" name="deleteme" value="{{stream.name}}" />
           <input type="submit" class="button" value="DEL" />
           </form>
@@ -23,12 +19,12 @@
 </table>
     {% endif %}
     <h1>Neuer Stream</h1>
-    <form name="streamConfig" action="/alarm/app/v1.0/streams">
+    <form name="streamConfig" action="{{html_links['configure_streams']}}">
           Name: <input type="text" name="name">
     	  Url: <input type="text" name="stream">
           <br />
 	  <input type="submit" class="button" value="OK">
     </form>
-</body>
 
-</html>
+    
+{% endblock %}

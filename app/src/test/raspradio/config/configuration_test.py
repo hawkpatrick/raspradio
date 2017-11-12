@@ -14,7 +14,7 @@ class ConfigurationTest(unittest.TestCase):
         configuration.common_config_holder = None
         configuration.config_holder = None
 
-    @patch('root.raspradio.config.configuration.read_hostname')
+    @patch('root.raspradio.config.configuration._read_hostname')
     def test_is_env_raspberry(self, mock_read_hostname):
         mock_read_hostname.return_value = "raspberrypi"
         isRaspi = configuration.is_env_raspberry()

@@ -3,7 +3,6 @@ Created on 15.10.2017
 
 @author: pho
 '''
-from flask import render_template
 import os, json, urllib, control_vlc
 from database import db_access
 
@@ -56,7 +55,6 @@ def http_configure_streams(reqargs):
     if 'deleteme' in reqargs:
         streamname = reqargs['deleteme']
         delete_stream(streamname)
-    return render_template('Streams.html', streams=radio_streams[:])
 
 def find_stream_by_name(name):
     for stream in radio_streams:
