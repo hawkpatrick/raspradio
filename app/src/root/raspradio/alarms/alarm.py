@@ -17,13 +17,7 @@ def add_alarm_by_request_args(reqargs):
     hour = reqargs['hour']
     minute = reqargs['minute']
     a = Alarm(str(len(all_alarms)), int(hour), int(minute))
-    if 'stream' in reqargs:
-        a.streamname = reqargs['stream']
-    if 'fadein' in reqargs:
-        a.isFadeInActive = True
-    a.bellDurationSeconds = _get_bell_duration_in_seconds_from_reqargs(reqargs)
-    if 'selectRepeatType' in reqargs:
-        a.repeat = repeat_alarm.create_repetition(reqargs['selectRepeatType'], [])
+    a.repetition = repeat_alarm.create_repetition(reqargs)
     all_alarms.append(a)
     save_alarms_to_file()
     print "Added new alarm: " + str(a)
@@ -61,11 +55,11 @@ class Alarm:
         self.alarmid = alarmid
         self.hour = hour
         self.minute = minute
-        self.streamname = ''
+        self.repetition = None
         self.isActive = True
-        self.isFadeInActive = False
-        self.bellDurationSeconds = 30
-        self.repeat = None
+        self.streamSetting = None
+        self.fadeInSetting = None
+        self.turnOffSetting = None
 
     def __repr__(self):
         return self.toJSON()
@@ -86,13 +80,13 @@ def _create_alarm_from_string(line):
     line = line.strip()
     alarmdict = json.loads(line)
     alarm = Alarm(alarmdict['alarmid'], alarmdict['hour'], alarmdict['minute'])
-    alarm.streamname = alarmdict['streamname']
-    if 'isFadeInActive' in alarmdict:
-        alarm.isFadeInActive = alarmdict['isFadeInActive']
-    if 'bellDurationSeconds' in alarmdict:
-        alarm.bellDurationSeconds = alarmdict['bellDurationSeconds']
-    if 'repeat' in alarmdict:
-        alarm.repeat = repeat_alarm.create_repeat_from_dict(alarmdict['repeat'])
+    alarm.streamSetting = alarmdict['streamSetting']
+    if 'fadeInSetting' in alarmdict:
+        alarm.fadeInSetting = alarmdict['fadeInSetting']
+    if 'turnOffSetting' in alarmdict:
+        alarm.turnOffSetting = alarmdict['turnOffSetting']
+    if 'repetition' in alarmdict:
+        alarm.repetition = repeat_alarm.create_repeat_from_dict(alarmdict['repetition'])
     return alarm
 
 

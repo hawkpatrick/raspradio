@@ -1,0 +1,42 @@
+<table>
+	<tr>
+		<td>
+			<b>Automatisches Abschalten</b>
+		</td>
+		<td>
+			{% set settingsActive=config['SectionBellStopper']['DefaultOn'] %}
+			{% with 
+				configSection='SectionBellStopper', 
+				configKey='DefaultOn', 
+				dependencies='SectionBellStopper_DurationInMinutes'
+			 %}
+			{% include 
+				"settings_checkbox.html"  
+			%}
+
+			{% endwith %}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Nach wie vielen Minuten?  
+		</td>
+
+		<td>
+			{% set configValue=config['SectionBellStopper']['DurationInMinutes'] %}
+			{% with
+				configSection='SectionBellStopper',
+				configKey='DurationInMinutes',
+				inputDisabled=false if settingsActive=="Yes" else true
+			%}
+
+			{% include 
+				"settings_input.html"  
+			%}
+
+			{% endwith %}
+		</td>
+	</tr>
+</table>
+
+

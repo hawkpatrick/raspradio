@@ -47,13 +47,13 @@ def save_streams_to_file():
             the_file.write(line + '\n')
 
 def http_configure_streams(reqargs):
-    if ('stream' in reqargs and 'name' in reqargs):
+    if 'add_stream' in reqargs:
         stream = reqargs['stream']
         name = reqargs['name']
         if stream and name: 
             add_new_stream(name, stream)
-    if 'deleteme' in reqargs:
-        streamname = reqargs['deleteme']
+    if 'delete_stream' in reqargs:
+        streamname = reqargs['delete_stream']
         delete_stream(streamname)
 
 def find_stream_by_name(name):

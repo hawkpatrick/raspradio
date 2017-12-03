@@ -1,48 +1,21 @@
-<table>
-	<tr>
-		<td align="center">
-			Mo
-		</td>
-		<td align="center">
-			Di
-		</td>
-		<td align="center">
-			Mi
-		</td>
-		<td align="center">
-			Do
-		</td>
-		<td align="center">
-			Fr
-		</td>
-		<td align="center">
-			Sa
-		</td>
-		<td align="center">
-			So
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<input type="checkbox" name="checkMo" value="Yes" id="checkMo">
-		</td>
-		<td>
-			<input type="checkbox" name="checkDi" value="Yes" id="checkDi">
-		</td>
-		<td>
-			<input type="checkbox" name="checkMi" value="Yes" id="checkMi">
-		</td>
-		<td>
-			<input type="checkbox" name="checkDo" value="Yes" id="checkDo">
-		</td>
-		<td>
-			<input type="checkbox" name="checkFr" value="Yes" id="checkFr">
-		</td>
-		<td>
-			<input type="checkbox" name="checkSa" value="Yes" id="checkSa">
-		</td>
-		<td>
-			<input type="checkbox" name="checkSo" value="Yes" id="checkSo">
-		</td>
-	</tr>
-</table>
+<div id="selectedDaysDiv">
+	<div id="divMo" class="selected_day is_not_selected_day" onclick="set_day_checked('Mo');">Mo</div>
+	<div id="divDi" class="selected_day is_not_selected_day" onclick="set_day_checked('Di');">Di</div>
+	<div id="divMi" class="selected_day is_not_selected_day" onclick="set_day_checked('Mi');">Mi</div>
+	<div id="divDo" class="selected_day is_not_selected_day" onclick="set_day_checked('Do');">Do</div>
+	<div id="divFr" class="selected_day is_not_selected_day" onclick="set_day_checked('Fr');">Fr</div>
+	<div id="divSa" class="selected_day is_not_selected_day" onclick="set_day_checked('Sa');">Sa</div>
+	<div id="divSo" class="selected_day is_not_selected_day" onclick="set_day_checked('So');">So</div>
+</div>
+
+
+<div id="myModal" style="display: none;">
+	<input type="checkbox" name="checkMo" value="Yes" id="checkMo" checked>
+	<input type="checkbox" name="checkDi" value="Yes" id="checkDi" checked>
+	<input type="checkbox" name="checkMi" value="Yes" id="checkMi" checked>
+	<input type="checkbox" name="checkDo" value="Yes" id="checkDo" checked>
+	<input type="checkbox" name="checkFr" value="Yes" id="checkFr" checked>
+	<input type="checkbox" name="checkSa" value="Yes" id="checkSa" checked>
+	<input type="checkbox" name="checkSo" value="Yes" id="checkSo" checked>
+</div>
+

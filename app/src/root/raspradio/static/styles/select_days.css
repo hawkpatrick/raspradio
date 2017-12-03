@@ -1,0 +1,30 @@
+.selected_day {
+    border: none;
+    width:24px;
+    height:24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.selected_day_readonly {
+    border: none;
+    width:16px;
+    height:16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 8px;
+}
+
+.is_selected_day  {
+    color: white;
+    background-color: #4CAF50; /* Green */
+}
+
+.is_not_selected_day  {
+    color: black;
+    background-color: #C0C0C0; /* Grey */
+}
+

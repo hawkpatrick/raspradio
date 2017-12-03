@@ -5,6 +5,9 @@ Created on 04.11.2017
 '''
 from datetime import datetime
 import fade_in_bell, stop_the_bell, play_music_of_bell
+from root.raspradio.config import fade_in_settings
+from root.raspradio.config import turn_off_settings
+from root.raspradio.config import stream_settings
 
 current_bell = None
 
@@ -84,20 +87,37 @@ class Bell(object):
         self.controlsVolume = False
 
     def __init_fader(self):
-        if not self.alarm.isFadeInActive:
+        fadeInSettings = self.__get_fader_settings()
+        if not fadeInSettings.active:
             return
         self.fader = fade_in_bell.create_new_fader()
         self.fader.activate()
         
     def __init_stopper(self):
-        if self.alarm.bellDurationSeconds <= 0:
+        turnOffSettings = self.__get_turn_off_settings()
+        if not turnOffSettings:
             return
-        self.stopper = stop_the_bell.create_new_stopper(self.alarm)
+        self.stopper = stop_the_bell.create_new_stopper(self.alarm.turnOffSetting)
         self.stopper.activate()
         
     def __init_musicplayer(self):
-        self.musicplayer = play_music_of_bell.create_new_musicplayer(self.alarm)
+        streamSetting = self.__get_stream_setting()
+        self.musicplayer = play_music_of_bell.create_new_musicplayer(streamSetting)
         self.musicplayer.activate()
-            
+        
+    def __get_fader_settings(self):
+        if self.alarm.fadeInSetting:
+            return self.alarm.fadeInSetting
+        return fade_in_settings.get_default()   
+    
+    def __get_turn_off_settings(self):
+        if self.alarm.turnOffSetting:
+            self.alarm.turnOffSetting
+        return turn_off_settings.get_default()
+    
+    def __get_stream_setting(self):
+        if self.alarm.streamSetting:
+            return self.alarm.streamSetting
+        return stream_settings.get_default_stream_setting()
         
         

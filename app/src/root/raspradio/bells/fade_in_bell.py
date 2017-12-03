@@ -40,7 +40,11 @@ def _fader_thread(fader):
     control_vlc.vlc_set_volume(fader.currentVolume)   
     _repeat_fader_thread(fader)
     
+
+        
     
+    
+
 class FadeIn(object):
     '''
     Args:

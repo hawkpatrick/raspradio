@@ -24,9 +24,8 @@ def _evaluate_alarm(alarm):
     if not _must_ring_bell_now(alarm):
         return
     bell.activate_new_bell(alarm)
-    if not alarm.repeat:
-        alarm.isActive = False
-        alarms.alarm.save_alarms_to_file()
+    if not alarm.repetition:
+        disable_alarm_and_save(alarm)
      
 def _must_ring_bell_now(alarm):
     now = _get_now()
@@ -34,11 +33,16 @@ def _must_ring_bell_now(alarm):
         return False
     if not alarm.isActive:
         return False
-    if not alarm.repeat or not alarm.repeat.days:
+    if not alarm.repetition or not alarm.repetition.days:
         return True
-    repeat = alarm.repeat
+    repetition = alarm.repetition
     weekdayNow = now.weekday()
-    return weekdayNow in repeat.days
+    return weekdayNow in repetition.days
 
 def _get_now():
     return datetime.now()
+
+def disable_alarm_and_save(alarm):
+    alarm.isActive = False
+    alarms.alarm.save_alarms_to_file()
+

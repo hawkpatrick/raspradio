@@ -1,0 +1,8 @@
+{% for day in ['Mo','Di','Mi','Do','Fr','Sa','So'] %}
+	{% if loop.index0 in wecker.repetition.days %}
+		<div id="div{{day}}" class="selected_day_readonly is_selected_day">{{day}}</div>
+	{% else %}
+		<div id="div{{day}}" class="selected_day_readonly is_not_selected_day">{{day}}</div>
+	{% endif %}
+{% endfor %}
+

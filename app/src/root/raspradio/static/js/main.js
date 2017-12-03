@@ -38,14 +38,6 @@ function validateConfigureSettingsForm() {
 
 } 
 
-function onCustomCheckboxClick(checkbox, configSection, configKey) {
-	var hiddenField = document.getElementById(configSection+"_"+configKey);
-	if (checkbox.checked) {
-		hiddenField.value = "Yes"
-	} else {
-		hiddenField.value = "No"
-	}
-}
 
 function isInt(value) {
   var x = parseFloat(value);

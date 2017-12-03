@@ -59,9 +59,9 @@ class WatchAlarmTest(unittest.TestCase):
     def test_must_ring_bell_now_monday_positive(self):
         # given
         alarm = Alarm(0, 10, 00)
-        repeat = RepeatAlarm()
-        repeat.days = [0]
-        alarm.repeat = repeat
+        repetition = RepeatAlarm()
+        repetition.days = [0]
+        alarm.repetition = repetition
         # when
         result = watch_alarms._must_ring_bell_now(alarm)
         # then
@@ -71,9 +71,9 @@ class WatchAlarmTest(unittest.TestCase):
     def test_must_ring_bell_now_monday_negative(self):
         # given
         alarm = Alarm(0, 10, 00)
-        repeat = RepeatAlarm()
-        repeat.days = [1]
-        alarm.repeat = repeat
+        repetition = RepeatAlarm()
+        repetition.days = [1]
+        alarm.repetition = repetition
         # when
         result = watch_alarms._must_ring_bell_now(alarm)
         # then

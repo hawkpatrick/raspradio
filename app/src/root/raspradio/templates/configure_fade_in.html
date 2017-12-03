@@ -1,0 +1,42 @@
+
+<table>
+	<tr>
+		<td>
+			<b>Sanftes Wecken</b>
+		</td>
+		<td>
+			{% set settingsActive=config['SectionBellFader']['DefaultOn'] %}
+			{% with 
+				configSection='SectionBellFader', 
+				configKey='DefaultOn', 
+				dependencies='SectionBellFader_Timespan'
+			 %}
+			{% include 
+				"settings_checkbox.html"  
+			%}
+
+			{% endwith %}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Wie viele Minuten?  
+		</td>
+
+		<td>
+			{% set configValue=config['SectionBellFader']['Timespan'] %}
+			{% with
+				configSection='SectionBellFader',
+				configKey='Timespan',
+				inputDisabled=false if settingsActive=="Yes" else true
+				
+			%}
+
+			{% include 
+				"settings_input.html"  
+			%}
+
+			{% endwith %}
+		</td>
+	</tr>
+</table>

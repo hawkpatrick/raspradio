@@ -1,0 +1,16 @@
+<label class="switch">
+	{% if not dependencies %}
+	{% set dependencies="" %}
+    {% endif %}
+	<input 
+		type="checkBox" 
+		onclick="onConfigureCheckboxClick(this, '{{configSection}}', '{{configKey}}', {{dependencies}});"
+		{% if settingsActive == "Yes" %}checked{% endif %}>
+	<span class="slider"></span>
+
+	<input 
+		type="hidden" 
+		name="{{configSection}}_{{configKey}}" 
+		id="{{configSection}}_{{configKey}}" 
+		value="{{settingsActive}}" >
+</label>

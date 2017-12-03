@@ -1,30 +1,29 @@
-{% extends "layout.html" %}
-{% block body %}
-
-    {% if streams %}
-        <h1>Bekannte Streams</h1>
-<table>
-    {% endif %}
-    {% for stream in streams %}
-  <tr>
-<td>{{stream.name}}</td><td><a href="{{stream.url}}">{{stream.url}}</a></td>
-      <td><form action="{{html_links['configure_streams']}}">
-          <input type="hidden" name="deleteme" value="{{stream.name}}" />
-          <input type="submit" class="button" value="DEL" />
-          </form>
-      </td>
-</tr>
-    {% endfor %}
-    {% if streams %}
-</table>
-    {% endif %}
-    <h1>Neuer Stream</h1>
-    <form name="streamConfig" action="{{html_links['configure_streams']}}">
-          Name: <input type="text" name="name">
-    	  Url: <input type="text" name="stream">
-          <br />
-	  <input type="submit" class="button" value="OK">
+{% if streams %}
+	<h2>Streams</h2>
+	<table>
+		{% for stream in streams %}
+			<tr>
+				<td>{{stream.name}}</td>
+				<td>
+					<a href="{{stream.url}}">{{stream.url}}</a>
+				</td>
+			  	<td>
+					<form action="{{html_links['configure_settings']}}">
+				  		<input type="hidden" name="delete_stream" value="{{stream.name}}" />
+				  		<input type="submit" class="button" value="-" />
+				  	</form>
+			  	</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endif %}
+	<h4>Neu</h4>
+    <form name="streamConfig" action="{{html_links['configure_settings']}}">
+		<input type="hidden" name="add_stream" />
+		Name: 
+		<input type="text" name="name"> <br />
+		Url:
+		<input type="text" name="stream"> <br />
+		<input type="submit" class="button" value="OK">
     </form>
 
-    
-{% endblock %}

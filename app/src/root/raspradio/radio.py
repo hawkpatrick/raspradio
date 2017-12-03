@@ -30,45 +30,39 @@ html_links = {
     configure_settings : configure_settings
     }
 
-@app.route('/raspradio/configure_streams', methods=['GET'])
-def entrypoint_configure_streams():
-    streams.http_configure_streams(request.args)
-    return render_template(
-        html_links[configure_streams] + ".html", 
-        html_links=html_links,
-        streams=streams.radio_streams[:])
 
 @app.route('/raspradio/list_alarms', methods=['GET'])
 def entrypoint_list_alarms():
     reqargs = request.args
+    config = user_settings.get_user_settings()
     if ('deleteme' in reqargs):
         handle_request_delete_alarm(reqargs)
     if ('hour' in reqargs and 'minute' in reqargs):
         handle_request_new_alarm(reqargs)
+    if 'new_alarm' in reqargs:
+        return render_template(
+            html_links[new_alarm] + ".html", 
+            html_links = html_links,
+            config = config,
+            aktivewecker = alarm.all_alarms[:], 
+            streams = streams.radio_streams[:])
     return render_template(
         html_links[list_alarms] + ".html", 
         html_links=html_links,
         aktivewecker=alarm.all_alarms[:], 
         streams=streams.radio_streams[:])
-
-@app.route('/raspradio/new_alarm', methods=['GET'])
-def entrypoint_new_alarm():
-    config = user_settings.get_user_settings()
-    return render_template(
-        html_links[new_alarm] + ".html", 
-        html_links = html_links,
-        config = config,
-        aktivewecker = alarm.all_alarms[:], 
-        streams = streams.radio_streams[:])
     
 @app.route('/raspradio/configure_settings', methods=['GET'])
 def entrypoint_configure_settings():
-    if request.args:
-        user_settings.save_user_settings(request.args)
+    reqargs = request.args
+    streams.http_configure_streams(reqargs)
+    if 'update_settings' in reqargs:
+        user_settings.save_user_settings(reqargs)
     config = user_settings.get_user_settings()
     return render_template(
         html_links[configure_settings] + ".html", 
         html_links=html_links,
+        streams=streams.radio_streams[:],
         config=config)     
     
                

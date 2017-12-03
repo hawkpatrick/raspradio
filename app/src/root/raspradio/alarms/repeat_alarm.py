@@ -13,14 +13,29 @@ DAY_FRIDAY = 4
 DAY_SATURDAY = 5
 DAY_SUNDAY = 6
 
-def create_repetition(repeatType, customDays):
-    if repeatType == 'once':
+def create_repetition(reqargs):
+    days = []
+    if not 'selectDaysSlider' in reqargs:
         return None
+    if 'checkMo' in reqargs:
+        days.append(DAY_MONDAY)
+    if 'checkDi' in reqargs:
+        days.append(DAY_TUESDAY)
+    if 'checkMi' in reqargs:
+        days.append(DAY_WEDNESDAY)
+    if 'checkDo' in reqargs:
+        days.append(DAY_THURSDAY)
+    if 'checkFr' in reqargs:
+        days.append(DAY_FRIDAY)
+    if 'checkSa' in reqargs:
+        days.append(DAY_SATURDAY)
+    if 'checkSo' in reqargs:
+        days.append(DAY_SUNDAY)
+    if not days:
+        return None
+
     result = RepeatAlarm()
-    if repeatType == 'alldays':
-        result.days = [DAY_MONDAY, DAY_TUESDAY, DAY_WEDNESDAY, DAY_THURSDAY, DAY_FRIDAY, DAY_SATURDAY, DAY_SUNDAY]
-    if repeatType == 'weekdays':
-        result.days = [DAY_MONDAY, DAY_TUESDAY, DAY_WEDNESDAY, DAY_THURSDAY, DAY_FRIDAY]
+    result.days = days
     return result
 
 

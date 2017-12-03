@@ -1,0 +1,49 @@
+<table>
+	<tr>
+		<td>
+			<b>Stream abspielen</b>
+		</td>
+		<td>
+			{% set settingsActive=config['SectionAlarmStreamSetting']['DefaultOn'] %}
+			{% with 
+				configSection='SectionAlarmStreamSetting', 
+				configKey='DefaultOn', 
+				dependencies='SectionAlarmStreamSetting_Stream'
+			 %}
+			{% include 
+				"settings_checkbox.html"  
+			%}
+
+			{% endwith %}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Welcher Stream?  
+		</td>
+
+		<td>
+			{% set configValue=config['SectionAlarmStreamSetting']['Stream'] %}
+			{% with
+				configSection='SectionAlarmStreamSetting',
+				configKey='Stream',
+				inputDisabled=false if settingsActive=="Yes" else true
+			%}
+			<select
+				id="{{configSection}}_{{configKey}}" 
+				name="{{configSection}}_{{configKey}}"
+				{% if inputDisabled%}disabled{% endif %}>
+				{% for stream in streams %}
+					{% if configValue==stream.name %}
+						<option value="{{stream.name}}" selected>{{stream.name}}</option>
+					{% else %}
+						<option value="{{stream.name}}">{{stream.name}}</option>	
+					{% endif %}
+				{% endfor %}
+			</select>
+			{% endwith %}
+		</td>
+	</tr>
+</table>
+
+

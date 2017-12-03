@@ -5,15 +5,40 @@
 	<h1>Aktive Wecker</h1>
 	{% endif %}
 	{% for wecker in aktivewecker %}
+ 		{% set hourStr = wecker.hour|string %}
+        {% if hourStr|length < 2 %}
+ 			{% set hourStr = "0"+hourStr %}
+		{% endif %}
+ 		{% set minuteStr = wecker.minute|string %}
+        {% if minuteStr|length < 2 %}
+ 			{% set minuteStr = "0"+minuteStr %}
+		{% endif %}
 		<form>
-		  <input type="hidden" name="deleteme" value="{{wecker.alarmid}}">
-		<p>
-		  <input type="text" readonly value="{{wecker.hour}}:{{wecker.minute}}" maxlength="2" size="2"> 
-		  <button class="disable-button" type="submit" value="-">löschen</button>
-		  <br />({{wecker.streamname}})
-		</p>
+			<table>
+				<tr>
+					<td>
+					  <input type="text" readonly value="{{hourStr}}:{{minuteStr}}" maxlength="2" size="2"> 
+					</td>
+					<td>
+					  <input type="hidden" name="deleteme" value="{{wecker.alarmid}}">
+					  <button class="disable-button" type="submit" value="-">-</button>
+					</td>
+				</tr>
+
+			{% if wecker.repetition %}
+				<tr>
+					<td colspan="2">
+						{% include 'select_days_readonly.html' %}
+					</td>
+				</tr>
+		 	 {% endif %}
+			</table>
 		</form>
 	{% endfor %}
 
+	<form>
+		<input type="hidden" name="new_alarm">
+		<button id="new_alarm_button">+</button>
+	</form>
     
 {% endblock %}

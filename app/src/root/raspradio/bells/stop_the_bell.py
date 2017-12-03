@@ -13,8 +13,8 @@ STATE_STOPPED = 2
 
 MONITOR_INTERVAL_IN_SECONDS = 10
 
-def create_new_stopper(alarm):
-    stopper = Stopper(alarm.bellDurationSeconds)
+def create_new_stopper(turnOffSetting):
+    stopper = Stopper(turnOffSetting.turnOffAfterSeconds)
     _start_stop_bell_monitor_thread(stopper)
     return stopper
 

@@ -6,24 +6,24 @@ Created on 05.11.2017
 import urllib 
 from root.raspradio import streams, control_vlc
 
-def create_new_musicplayer(alarm):
-    result = Musicplayer(alarm)
+def create_new_musicplayer(streamSetting):
+    result = BellMusicPlayer(streamSetting)
     return result
 
-class Musicplayer(object):
+class BellMusicPlayer(object):
     '''
     classdocs
     '''
 
-    def __init__(self, alarm):
+    def __init__(self, streamSetting):
         '''
         Constructor
         '''
-        self.alarm = alarm
+        self.streamSetting = streamSetting
         
     def activate(self):
-        if self.alarm.streamname:
-            stream = streams.find_stream_by_name(self.alarm.streamname)
+        if self.streamSetting:
+            stream = streams.find_stream_by_name(self.streamSetting.streamName)
             if stream:
                 encodedstream = urllib.quote_plus(stream.url)
                 control_vlc.vlc_play_stream(encodedstream)
@@ -32,3 +32,4 @@ class Musicplayer(object):
         
     def deactivate(self):
         control_vlc.vlccmd('pl_pause')
+        
