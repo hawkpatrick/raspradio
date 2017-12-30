@@ -1,8 +1,3 @@
-'''
-Created on 05.11.2017
-
-@author: pho
-'''
 from root.raspradio.config.configuration import get_user_config_path
 import configparser
 from root.raspradio.config import configuration

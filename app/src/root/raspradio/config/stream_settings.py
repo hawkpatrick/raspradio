@@ -1,8 +1,3 @@
-'''
-Created on 25.11.2017
-
-@author: pho
-'''
 from root.raspradio.config.user_settings import get_user_settings
         
 class AlarmStreamSetting:

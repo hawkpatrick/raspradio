@@ -1,21 +1,18 @@
-'''
-Created on 30.10.2017
-
-@author: pho
-'''
 import unittest
-from root.raspradio import control_vlc
-from mock import patch
+from root.raspradio.vlc import control_vlc
+from mock import patch, call
 
 
 class ControlVlcTest(unittest.TestCase):
     
-    @patch('root.raspradio.control_vlc.vlc_set_volume')
-    @patch('root.raspradio.control_vlc.vlc_read_volume')
-    def testIncreaseVolume(self, mock_vlc_read_volume, mock_vlc_set_volume):
-        mock_vlc_read_volume.return_value = 20
-        control_vlc.vlc_increase_volume(10)
-        mock_vlc_set_volume.assert_called_with(30)
+    @patch('root.raspradio.control_vlc._vlc_cmd')
+    @patch('root.raspradio.control_vlc._vlc_cmd_with_input')
+    def testIncreaseVolume(self, mock_vlc_cmd_with_input, mock_vlc_cmd):
+        # when
+        control_vlc.vlc_play_stream('test')
+        # then
+        mock_vlc_cmd.assert_has_calls(calls=[call('pl_empty'), call('pl_play')])
+        mock_vlc_cmd_with_input.assert_called_with('in_enqueue','test')
 
 
 if __name__ == "__main__":

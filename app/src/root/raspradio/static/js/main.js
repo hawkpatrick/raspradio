@@ -1,5 +1,6 @@
 
 function validateNewAlarmForm() {
+
     var hour = document.forms["newAlarmForm"]["hour"].value;
     var minute = document.forms["newAlarmForm"]["minute"].value;
 	var stream = document.forms["newAlarmForm"]["stream"].value;
@@ -35,7 +36,7 @@ function validateNewAlarmForm() {
 }
 
 function validateConfigureSettingsForm() {
-
+    // TODO Implement validation
 } 
 
 
@@ -50,28 +51,18 @@ function isInt(value) {
   return !isNaN(value) && (x | 0) === x;
 }
 
-function onRepeatTypeChanged() {
-	var x = document.getElementById("selectRepeatType").value;
-	if (x == 'custom') {
-		document.getElementById("divRepeatSelectDays").style = "";
-		document.getElementById("divNewAlarm").style = "display: none;";
-	} else {
-		document.getElementById("divRepeatSelectDays").style = "display: none;";
-		document.getElementById("divNewAlarm").style = "";
-	}
+function init_volume_slider() {
+    var rangeInput = document.getElementById("volumeSlider");
+    if (rangeInput == null) {
+        return;
+    }
+    rangeInput.addEventListener('mouseup', function () {
+        var playerForm = document.getElementById("playerForm");
+        playerForm.submit();
+    });
 }
 
-function onRepeatSelectedDaysConfirmed() {
-	document.getElementById("divRepeatSelectDays").style = "display: none;";
-	document.getElementById("divNewAlarm").style = "";
+window.onload = function(e) {
+    init_volume_slider();
+    show_or_hide_days();
 }
-
-
-function onTurnOfCheckBoxClicked(element) {
-	if (! element.checked) {
-		document.getElementById("duration").style = "display: none;";
-    } else {
-		document.getElementById("duration").style = "";
-	}
-}
-

@@ -1,8 +1,3 @@
-'''
-Created on 19.10.2017
-
-@author: pho
-'''
 import os
 
 def get_path_to_database_folder():

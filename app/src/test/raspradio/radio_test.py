@@ -1,8 +1,3 @@
-'''
-Created on 15.10.2017
-
-@author: pho
-'''
 import unittest
 
 class RadioTest(unittest.TestCase):

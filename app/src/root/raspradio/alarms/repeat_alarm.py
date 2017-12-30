@@ -1,8 +1,3 @@
-'''
-Created on 05.11.2017
-
-@author: pho
-'''
 import json
 
 DAY_MONDAY = 0

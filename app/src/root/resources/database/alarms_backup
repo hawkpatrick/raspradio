@@ -1,1 +1,1 @@
-{     "alarmid": "0",      "fadeInSetting": null,      "hour": 0,      "isActive": true,      "minute": 0,      "repetition": {         "days": [             5,              6         ]     },      "streamSetting": null,      "turnOffSetting": null }
+{     "alarmid": "0",      "fadeInSetting": null,      "hour": 2,      "isActive": false,      "minute": 38,      "repetition": null,      "stopTheBellSettings": null,      "streamSetting": null }

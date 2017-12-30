@@ -1,8 +1,3 @@
-'''
-Created on 15.10.2017
-
-@author: pho
-'''
 import unittest
 from root.raspradio import streams
 from root.raspradio.streams import Stream
@@ -30,14 +25,14 @@ class StreamsTest(unittest.TestCase):
         assert streams.radio_streams[1].url == "www.pop.de"
         
     def test_html_request_adds_stream(self):
-        req = {'name': 'Test Radio', 'stream': 'http://www.klassikradio.de/'}
+        req = {'add_stream': 'True', 'name': 'Test Radio', 'stream': 'http://www.klassikradio.de/'}
         streams.http_configure_streams(req)
         assert len(streams.radio_streams) is 1
         assert streams.radio_streams[0].name == 'Test Radio'
         
     def test_html_request_deletes_stream(self):
         streams.radio_streams = [Stream("Deleteable Radio", "www.delete.de")]
-        req = {'deleteme': 'Deleteable Radio'}
+        req = {'delete_stream': 'Deleteable Radio'}
         streams.http_configure_streams(req)
         assert len(streams.radio_streams) is 0
 

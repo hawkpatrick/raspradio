@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1>Player</h1>
+
+<form action="{{html_links['player']}}" method="get" name="playerForm" id="playerForm">
+    <input type="hidden" value="EGAL" name="play_control">
+
+    <!-- Play / Stop button -->
+    {% set play_control_value = "Stop" if player_state['state'] == 'playing' else "Play" %}
+    <button type="submit" value="{{play_control_value}}" name="play_control_value">
+        {{play_control_value}}
+    </button>
+
+    <!-- Volume slider -->
+    {% set volumeTextValue = player_state['volume'] %}
+    <label for="volumeSlider">
+        <input type="range" min="1" max="100" value="{{volumeTextValue}}" class="slider" name="volumeSlider" id="volumeSlider">
+    </label>
+</form>
+
+{% endblock %}

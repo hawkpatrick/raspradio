@@ -1,55 +1,45 @@
-'''
-Created on 05.11.2017
-
-@author: pho
-'''
 import threading
 from datetime import datetime
-from root.raspradio import control_vlc
 
 STATE_CREATED = 0
 STATE_RUNNING = 1
 STATE_STOPPED = 2
 
+# Alle X Sekunden wird gecheckt, ob die Bell gestoppt werden soll
 MONITOR_INTERVAL_IN_SECONDS = 10
 
-def create_new_stopper(turnOffSetting):
-    stopper = Stopper(turnOffSetting.turnOffAfterSeconds)
-    _start_stop_bell_monitor_thread(stopper)
-    return stopper
+def create_new_stop_the_bell(stopTheBellSettings, bell):
+    stopTheBell = StopTheBell(bell, stopTheBellSettings.turnOffAfterMinutes * 60)
+    _start_stop_bell_monitor_thread(stopTheBell)
+    return stopTheBell
 
-def _start_stop_bell_monitor_thread(stopper):
-    faderThread = threading.Thread(target=_stop_bell_monitor_thread, args=[stopper])
+def _start_stop_bell_monitor_thread(stopTheBell):
+    faderThread = threading.Thread(target=_stop_bell_monitor_thread, args=[stopTheBell])
     faderThread.start()
 
-def _repeat_stop_bell_monitor_thread(stopper):
-    if stopper.state == STATE_STOPPED:
+def _repeat_stop_bell_monitor_thread(stopTheBell):
+    if stopTheBell.state == STATE_STOPPED:
         return
-    t = threading.Timer(MONITOR_INTERVAL_IN_SECONDS, _stop_bell_monitor_thread, [stopper])
+    t = threading.Timer(MONITOR_INTERVAL_IN_SECONDS, _stop_bell_monitor_thread, [stopTheBell])
     t.start()
         
-def _stop_bell_monitor_thread(stopper):
-    if stopper.mustStopTheBellNow():
-        stopper.stopTheBellNow()
-    _repeat_stop_bell_monitor_thread(stopper)
+def _stop_bell_monitor_thread(stopTheBell):
+    if stopTheBell.mustStopTheBellNow():
+        stopTheBell.stopTheBellNow()
+    _repeat_stop_bell_monitor_thread(stopTheBell)
 
-class Stopper(object):
-    '''
-    classdocs
-    '''
+class StopTheBell(object):
 
-    def __init__(self, bellDurationSeconds):
-        '''
-        Constructor
-        '''
+    def __init__(self, bell, bellDurationSeconds):
         self.state = STATE_CREATED
+        self.bell = bell
         self.bellDurationSeconds = bellDurationSeconds
         self.timeStarted = datetime.now()
         
-    def activate(self):
+    def activate_stop_the_bell(self):
         self.state = STATE_RUNNING
         
-    def deactivate(self):
+    def deactivate_stop_the_bell(self):
         self.state = STATE_STOPPED
         
     def mustStopTheBellNow(self):
@@ -60,8 +50,4 @@ class Stopper(object):
     def stopTheBellNow(self):
         if self.state != STATE_RUNNING:
             return
-        control_vlc.vlccmd('pl_pause')
-
-        
-    
-        
+        self.bell.deactivate()

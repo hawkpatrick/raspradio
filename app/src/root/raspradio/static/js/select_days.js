@@ -1,11 +1,9 @@
 function show_or_hide_days() {
-
 	update_selected_days();
 	var selectedDaysDiv = document.getElementById('selectedDaysDiv');
 	var selectDaysSlider = document.getElementById('selectDaysSlider');
     if (! selectDaysSlider.checked) {
         selectedDaysDiv.style.display = "none";
-		return;
 	} else {
         selectedDaysDiv.style.display = "";
 	}
@@ -38,8 +36,3 @@ function set_day_checked(day) {
 	update_selected_days()
 }
 
-
-
-window.onload = function () { 
-	show_or_hide_days();
-}

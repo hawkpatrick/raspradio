@@ -1,8 +1,3 @@
-'''
-Created on 16.10.2017
-
-@author: pho
-'''
 import configparser, os
 
 config_holder = None

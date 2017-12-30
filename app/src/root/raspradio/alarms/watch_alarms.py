@@ -1,12 +1,5 @@
-'''
-Created on 04.11.2017
-
-@author: pho
-'''
-
 from root.raspradio.alarms import alarm
 from root.raspradio.bells import bell
-
 import threading
 from datetime import datetime
 from root.raspradio import alarms

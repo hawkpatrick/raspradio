@@ -1,8 +1,3 @@
-'''
-Created on 05.11.2017
-
-@author: pho
-'''
 import unittest
 from root.raspradio.alarms import watch_alarms
 from root.raspradio.alarms.alarm import Alarm

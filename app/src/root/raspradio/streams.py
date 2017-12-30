@@ -1,9 +1,5 @@
-'''
-Created on 15.10.2017
-
-@author: pho
-'''
-import os, json, urllib, control_vlc
+import os, json, urllib
+from root.raspradio.vlc import control_vlc
 from database import db_access
 
 radio_streams = []

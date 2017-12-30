@@ -42,6 +42,12 @@ Vorbereitung:
 * Das selbe für batch, bspw. im Ordner /home/pi/batch
 
   
+*** Installation mit IntelliJ *** 
+
+* git auschecken 
+* intellij öffnen
+* "import from existing sources" und zum ausgecheckten src ordner navigieren
+* Projekt-Einstellungen öffnen (f4) -> "Platform Settings" -> "SDKs" -> "Packages" -> "+" -> die oben genannten Libraries installieren (requests, pyhton-dateutil, etc)
 
 *** Deployment ***
 

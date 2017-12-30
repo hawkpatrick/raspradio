@@ -1,12 +1,6 @@
-'''
-Created on 19.10.2017
-
-@author: pho
-'''
 from root.raspradio.database import db_access
 import os, json
 from root.raspradio.alarms import repeat_alarm
-from root.raspradio.config import bell_config
 
 all_alarms = []
 
@@ -21,14 +15,6 @@ def add_alarm_by_request_args(reqargs):
     all_alarms.append(a)
     save_alarms_to_file()
     print "Added new alarm: " + str(a)
-
-
-def _get_bell_duration_in_seconds_from_reqargs(reqargs):
-    if not 'turnoff' in reqargs: 
-        return 0
-    if 'duration' in reqargs and reqargs['duration']:
-        return int(reqargs['duration']) * 60
-    return bell_config.get_stopper_duration_in_minutes() * 60
 
 
 def delete_alarm(alarmid):
@@ -59,7 +45,7 @@ class Alarm:
         self.isActive = True
         self.streamSetting = None
         self.fadeInSetting = None
-        self.turnOffSetting = None
+        self.stopTheBellSettings = None
 
     def __repr__(self):
         return self.toJSON()
@@ -83,8 +69,8 @@ def _create_alarm_from_string(line):
     alarm.streamSetting = alarmdict['streamSetting']
     if 'fadeInSetting' in alarmdict:
         alarm.fadeInSetting = alarmdict['fadeInSetting']
-    if 'turnOffSetting' in alarmdict:
-        alarm.turnOffSetting = alarmdict['turnOffSetting']
+    if 'stopTheBellSettings' in alarmdict:
+        alarm.stopTheBellSettings = alarmdict['stopTheBellSettings']
     if 'repetition' in alarmdict:
         alarm.repetition = repeat_alarm.create_repeat_from_dict(alarmdict['repetition'])
     return alarm

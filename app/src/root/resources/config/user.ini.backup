@@ -1,13 +1,13 @@
 [SectionBellFader]
 DefaultOn = Yes
-TimespanInSeconds = 120
-
-[SectionBellStopper]
-DefaultOn = No
+TimespanInSeconds = 10
 
 [SectionAlarmStreamSetting]
 DefaultOn = Yes
 Stream = Beep
+
+[SectionBellStopper]
+DefaultOn = No
 
 [update]
 settings = 

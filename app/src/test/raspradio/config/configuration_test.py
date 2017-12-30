@@ -1,8 +1,3 @@
-'''
-Created on 16.10.2017
-
-@author: pho
-'''
 import unittest
 from mock import patch
 from root.raspradio.config import configuration

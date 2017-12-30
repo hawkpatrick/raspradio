@@ -9,7 +9,7 @@
 			{% with 
 				configSection='SectionBellFader', 
 				configKey='DefaultOn', 
-				dependencies='SectionBellFader_Timespan'
+				dependencies='SectionBellFader_TimespanInSeconds'
 			 %}
 			{% include 
 				"settings_checkbox.html"  
@@ -20,14 +20,14 @@
 	</tr>
 	<tr>
 		<td>
-			Wie viele Minuten?  
+			Wie viele Sekunden?
 		</td>
 
 		<td>
-			{% set configValue=config['SectionBellFader']['Timespan'] %}
+			{% set configValue=config['SectionBellFader']['TimespanInSeconds'] %}
 			{% with
 				configSection='SectionBellFader',
-				configKey='Timespan',
+				configKey='TimespanInSeconds',
 				inputDisabled=false if settingsActive=="Yes" else true
 				
 			%}
