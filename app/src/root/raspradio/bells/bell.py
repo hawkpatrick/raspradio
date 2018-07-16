@@ -70,7 +70,7 @@ class Bell(object):
         Starts ringing the bell which means playing the stream
         (triggered by alarm watch)
         """
-        print "Rining bell of alarm " + str(self.alarm)
+        print "Ringing bell of alarm " + str(self.alarm)
         self.isActive = True
         self.__init_fader()
         self.__init_stop_the_bell()
@@ -114,6 +114,8 @@ class Bell(object):
         
     def __init_musicplayer(self):
         streamSetting = self.__get_stream_setting()
+        if (streamSetting.streamName == 'NoStream'):
+            return
         self.musicplayer = bell_music_player.create_new_musicplayer(streamSetting)
         time.sleep(2)
         self.musicplayer.activate_bell_music_player()

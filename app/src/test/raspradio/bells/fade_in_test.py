@@ -9,7 +9,7 @@ from root.raspradio.config.fade_in_settings import FadeInSettings
 
 class FadeInTest(unittest.TestCase):
 
-    @patch('root.raspradio.control_vlc.vlc_set_volume') 
+    @patch('root.raspradio.vlc.control_vlc.vlc_set_volume')
     @patch.object(threading.Thread, 'start')  
     def testStartAndStopFader(self, mock_thread_start, mock_vlc_set_volume):
         # given
@@ -21,7 +21,7 @@ class FadeInTest(unittest.TestCase):
         mock_thread_start.assert_called_once()
 
 
-    @patch('root.raspradio.control_vlc.vlc_set_volume') 
+    @patch('root.raspradio.vlc.control_vlc.vlc_set_volume')
     @patch('root.raspradio.bells.fade_in._repeat_fader_thread')
     def testFader(self, mock_repeat_thread, mock_vlc_set_volume):
         timespanInSeconds = 30
@@ -30,7 +30,7 @@ class FadeInTest(unittest.TestCase):
         fader = FadeIn(timespanInSeconds, targetVolume, intervalInSeconds)
         
         self.assertEquals(fade_in.STATE_CREATED, fader.state)
-        fader.activate()
+        fader.activate_fade_in()
         self.assertEquals(fade_in.STATE_STARTED, fader.state)
 
         fade_in._fader_thread(fader)

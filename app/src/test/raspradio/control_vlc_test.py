@@ -5,8 +5,8 @@ from mock import patch, call
 
 class ControlVlcTest(unittest.TestCase):
     
-    @patch('root.raspradio.control_vlc._vlc_cmd')
-    @patch('root.raspradio.control_vlc._vlc_cmd_with_input')
+    @patch('root.raspradio.vlc.control_vlc._vlc_cmd')
+    @patch('root.raspradio.vlc.control_vlc._vlc_cmd_with_input')
     def testIncreaseVolume(self, mock_vlc_cmd_with_input, mock_vlc_cmd):
         # when
         control_vlc.vlc_play_stream('test')

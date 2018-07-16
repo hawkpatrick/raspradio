@@ -41,7 +41,7 @@ def _fader_thread(fader):
     if fader.currentVolume >= fader.targetVolume:
         print "Fade-In completed: Reached target volume of " + str(fader.targetVolume)
         fader.currentVolume = fader.targetVolume
-        fader.deactivate()
+        fader.deactivate_fade_in()
     control_vlc.vlc_set_volume(fader.currentVolume)   
     _repeat_fader_thread(fader)
 

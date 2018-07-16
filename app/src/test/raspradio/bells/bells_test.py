@@ -15,8 +15,7 @@ class BellTest(unittest.TestCase):
 
 
     @patch('root.raspradio.config.stop_the_bell_settings.get_stop_the_bell_settings_from_config')
-    @patch.object(BellMusicPlayer, 'activate')  
-    def testActivateBell(self, mock_activate, mock_get_stop_the_bell_settings):
+    def testActivateBell(self, mock_get_stop_the_bell_settings):
         #given
         alarm = Alarm(1, 21, 54)
         alarm.stopTheBellSettings = None
@@ -26,12 +25,11 @@ class BellTest(unittest.TestCase):
         bell.activate_new_bell(alarm)
         # then
         self.assertIsNotNone(bell.current_bell)
-        self.assertTrue(mock_activate.called)
 
     @patch('root.raspradio.config.stop_the_bell_settings.get_stop_the_bell_settings_from_config')
-    @patch.object(BellMusicPlayer, 'activate')  
-    def testActivateBellOnlyOnce(self, mock_activate, mock_get_stop_the_bell_settings):
+    def testActivateBellOnlyOnce(self, mock_get_stop_the_bell_settings):
         #given
+        mock_get_stop_the_bell_settings.return_value = None
         alarm1 = Alarm(1, 21, 54)
         alarm1.stopTheBellSettings = None
         alarm1.fadeInSetting = None
@@ -40,16 +38,15 @@ class BellTest(unittest.TestCase):
         alarm2.fadeInSetting = None
         bell.activate_new_bell(alarm1)
         bell1 = bell.current_bell
-        mock_get_stop_the_bell_settings.return_value = None
         # when
         bell.activate_new_bell(alarm2)
         # then
         self.assertEqual(bell.current_bell, bell1)
 
     @patch('root.raspradio.config.stop_the_bell_settings.get_stop_the_bell_settings_from_config')
-    @patch.object(BellMusicPlayer, 'activate')  
-    def testActivatingNewBellTurnsOffCurrentBell(self, mock_activate, mock_get_stop_the_bell_settings):
+    def testActivatingNewBellTurnsOffCurrentBell(self, mock_get_stop_the_bell_settings):
         #given
+        mock_get_stop_the_bell_settings.return_value = None
         alarm1 = Alarm(1, 21, 54)
         alarm1.stopTheBellSettings = None
         alarm1.fadeInSetting = None
@@ -59,7 +56,6 @@ class BellTest(unittest.TestCase):
         alarm2 = Alarm(1, 22, 54)
         alarm2.stopTheBellSettings = None
         alarm2.fadeInSetting = None
-        mock_get_stop_the_bell_settings.return_value = None
         # when
         bell.activate_new_bell(alarm2)
         # then
